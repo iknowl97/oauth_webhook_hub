@@ -1,77 +1,131 @@
-# Project: OAuth & Webhook Hub
+# 🧠 GEMINI Master Context
 
-## Project Overview
+**Project**: OAuth & Webhook Hub
+**Status**: `MVP Completed` | `UI Refactored`
+**Author**: iknowl97
 
-This project is a self-hosted, Dockerized service that provides a centralized hub for managing OAuth 2.0 flows and a testing panel for webhooks. It is designed to streamline development workflows by offering a single, stable redirect URI for various OAuth providers and a comprehensive interface for inspecting, replaying, and forwarding webhook requests.
+---
 
-**Key Features:**
+## 📅 Progress & Status
 
-*   **OAuth Hub:**
-    *   Provides a single redirect URI (`/oauth/callback`) for all configured providers (e.g., Google, GitHub, Spotify).
-    *   A UI for managing OAuth provider configurations (client ID, secret, scopes).
-    *   Securely stores and manages access and refresh tokens.
-    *   Supports PKCE for enhanced security.
-*   **Webhook Panel:**
-    *   Generates dynamic webhook endpoints (`/hook/{id}`).
-    *   Logs incoming webhook requests, including headers, body, and query parameters.
-    *   Allows for replaying requests to different URLs for testing.
-    *   Can automatically forward incoming webhooks to another URL.
+| Component          | Status  | Description                                            |
+| ------------------ | ------- | ------------------------------------------------------ |
+| **Infrastructure** | ✅ Done | Docker Compose (DB, Backend, Frontend, Nginx).         |
+| **Database**       | ✅ Done | Postgres 16 + Kysely Migrations.                       |
+| **Backend API**    | ✅ Done | Fastify, Routes for Providers, OAuth (PKCE), Webhooks. |
+| **Security**       | ✅ Done | AES-256-GCM Encryption for secrets.                    |
+| **Frontend UI**    | ✅ Done | React + Vite. **Modern Dark Theme** (Shadcn/Tailwind). |
+| **Documentation**  | ✅ Done | README, EASY_SETUP, TechSpec.                          |
 
-**Architecture & Technologies:**
+---
 
-*   **Backend:** Node.js with Fastify
-*   **Frontend:** React (or a similar framework like Vue/Svelte) with Tailwind CSS
-*   **Database:** PostgreSQL for storing provider configurations, tokens, and webhook logs.
-*   **Deployment:** The entire application is containerized using Docker and orchestrated with Docker Compose. An Nginx container is included for acting as a reverse proxy and handling SSL/TLS.
+## 🎨 Frontend Design System
 
-## Building and Running
+The UI has been completely refactored to a custom implementation of the **Shadcn** aesthetic using **Tailwind CSS**.
 
-The application is designed to be run with Docker Compose.
+- **Theme**: Dark Mode (`class="dark"`).
+- **Colors**:
+  - Background: `Zinc 950` (#09090b)
+  - Primary: `Violet 600` (#7c3aed)
+  - Card: `Zinc 950` with `Zinc 800` borders.
+- **Components** (`/src/components/ui`):
+  - `button.jsx`: Variants (default, outline, ghost, destructive).
+  - `card.jsx`: Compositional card components.
+  - `input.jsx`: Styled input fields.
+  - `table.jsx`: Data display.
+  - `badge.jsx`: Status indicators.
+- **Layout**:
+  - `Layout.jsx`: Responsive Sidebar + Header + Breadcrumb area.
 
-**Prerequisites:**
+---
 
-*   Docker
-*   Docker Compose
+## 📂 Project File Tree
 
-**Setup and Execution:**
+```
+oauth_webhook_hub/
+├── .env                # Secrets (NOT committed)
+├── .env.example        # Template
+├── docker-compose.yml  # Orchestration
+├── README.md           # GitHub Entry
+├── EASY_SETUP.md       # Deployment Guide
+├── backend/
+│   ├── Dockerfile
+│   ├── src/
+│   │   ├── index.js    # Entry Point (Fastify)
+│   │   ├── db/
+│   │   │   ├── connection.js
+│   │   │   ├── migrate.js
+│   │   │   └── migrations/ (SQL files)
+│   │   ├── routes/
+│   │   │   ├── hooks.js
+│   │   │   ├── oauth.js
+│   │   │   ├── providers.js
+│   │   │   └── webhook.js (Receiver)
+│   │   └── services/
+│   │       ├── encryption.js (AES-256)
+│   │       └── oauth.js (PKCE/State)
+├── frontend/
+│   ├── Dockerfile
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   ├── src/
+│   │   ├── index.css   # Global styles & Variables
+│   │   ├── App.jsx     # Routes
+│   │   ├── main.jsx
+│   │   ├── lib/
+│   │   │   ├── api.js  # Axios Client
+│   │   │   └── utils.js (cn helper)
+│   │   ├── components/
+│   │   │   ├── Layout.jsx
+│   │   │   ├── Modal.jsx (Dialog)
+│   │   │   └── ui/ (Shadcn components)
+│   │   └── pages/
+│   │       ├── Dashboard.jsx
+│   │       ├── Providers.jsx
+│   │       ├── Tokens.jsx
+│   │       └── Webhooks.jsx
+└── nginx/
+    └── nginx.conf      # Reverse Proxy
+```
 
-1.  **Clone the Repository:**
-    ```bash
-    git clone <repository-url>
-    cd oauth-webhook-hub
-    ```
+---
 
-2.  **Configure Environment:**
-    *   Create a `.env` file from the example template:
-        ```bash
-        cp .env.example .env
-        ```
-    *   Edit the `.env` file to set the `APP_BASE_URL`, database credentials, and security secrets (`JWT_SECRET`, `ENCRYPTION_KEY`, `ADMIN_PASSWORD`).
+## 🔗 Critical Dependencies & config
 
-3.  **Build and Run the Application:**
-    ```bash
-    docker compose build
-    docker compose up -d
-    ```
+1.  **Encryption Key**: `ENCRYPTION_KEY` in `.env` (32-byte hex) is **CRITICAL**. losing this means losing access to all stored Client Secrets and Tokens.
+2.  **Database URL**: Connection string for Postgres.
+3.  **App Base URL**: Used for generating Redirect URIs.
 
-4.  **Accessing the Application:**
-    *   The application will be available at the `APP_BASE_URL` specified in your `.env` file.
-    *   The primary redirect URI for all OAuth applications will be `${APP_BASE_URL}/oauth/callback`.
+---
 
-5.  **Stopping the Application:**
-    ```bash
-    docker compose down
-    ```
+## 📝 Plan & Roadmap
 
-## Development Conventions
+### ✅ Completed
 
-*   **Code Structure:** The project is organized into three main directories:
-    *   `backend/`: Contains the Node.js/Fastify API.
-    *   `frontend/`: Contains the React/Vue frontend application.
-    *   `nginx/`: Contains the Nginx configuration.
-*   **Database:** The database schema is managed via SQL migration files located in `backend/src/db/migrations/`. Migrations are expected to run automatically on backend startup.
-*   **Security:**
-    *   Sensitive data (like client secrets and tokens) is encrypted at rest in the database using AES-256-GCM.
-    *   Secrets and configuration are managed via the `.env` file and should not be committed to version control.
-*   **API:** The backend exposes a RESTful API for managing providers, tokens, and webhooks. Refer to the `TechSpec.md` for detailed API endpoint specifications.
-*   **Logging:** The backend application is configured to output structured JSON logs to `stdout` and rotate log files.
+- [x] Initial Docker Setup
+- [x] Database Schema & Migrations
+- [x] Backend CRUD (Providers, Webhooks)
+- [x] Webhook Ingestion Engine
+- [x] OAuth Flow (Redirect > Token Exchange > Storage)
+- [x] UI/UX Overhaul (Shadcn + Dark Theme)
+- [x] Documentation
+
+### ⏳ Pending / Future Considerations
+
+- [ ] **Token Refresh Daemon**: Automatically refresh expiring tokens.
+- [ ] **Request Replay**: Button to resend a captured webhook to a local target.
+- [ ] **Filtering**: Search/Filter logs in the Webhook Inspector.
+- [ ] **Export**: JSON export of captured logs.
+- [ ] **User Auth**: Protect the Hub itself with a login (currently open network).
+
+---
+
+## 💡 Notes for Agent
+
+- **Frontend Build**: Requires `npm run build` in `frontend/`. Watch out for Tailwind version mismatch (Use v3.4.17).
+- **Database**: If DB isn't healthy, Backend will fail startup. Docker Compose healthchecks handle this usually.
+- **Imports**: Frontend uses `import { cn } from '../lib/utils'`, be careful with relative paths when moving files.
+
+---
+
+_Last Updated: 2025-12-17_
