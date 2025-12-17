@@ -1,41 +1,45 @@
 # 🧠 GEMINI Master Context
 
 **Project**: OAuth & Webhook Hub
-**Status**: `MVP Completed` | `UI Refactored`
+**Status**: `MVP Completed` | `UI Refactored` | `Tech Audit Passed`
 **Author**: iknowl97
 
 ---
 
 ## 📅 Progress & Status
 
-| Component          | Status  | Description                                            |
-| ------------------ | ------- | ------------------------------------------------------ |
-| **Infrastructure** | ✅ Done | Docker Compose (DB, Backend, Frontend, Nginx).         |
-| **Database**       | ✅ Done | Postgres 16 + Kysely Migrations.                       |
-| **Backend API**    | ✅ Done | Fastify, Routes for Providers, OAuth (PKCE), Webhooks. |
-| **Security**       | ✅ Done | AES-256-GCM Encryption for secrets.                    |
-| **Frontend UI**    | ✅ Done | React + Vite. **Modern Dark Theme** (Shadcn/Tailwind). |
-| **Documentation**  | ✅ Done | README, EASY_SETUP, TechSpec (Moved to `Docs/`).       |
+| Component          | Status  | Description                                                |
+| ------------------ | ------- | ---------------------------------------------------------- |
+| **Infrastructure** | ✅ Done | Docker Compose (DB, Backend: Node 20, Frontend: React 19). |
+| **Database**       | ✅ Done | Postgres 16 + Kysely Migrations.                           |
+| **Backend API**    | ✅ Done | Fastify v5, Routes for Providers, OAuth (PKCE), Webhooks.  |
+| **Security**       | ✅ Done | AES-256-GCM Encryption. **Needs User Auth**.               |
+| **Frontend UI**    | ✅ Done | React 19 + Vite. **Modern Dark Theme** (Shadcn/Tailwind).  |
+| **Documentation**  | ✅ Done | Comprehensive in `Docs/`.                                  |
 
 ---
 
-## 🎨 Frontend Design System
+## 🏗️ Technical Architecture (Audited)
 
-The UI has been completely refactored to a custom implementation of the **Shadcn** aesthetic using **Tailwind CSS**.
+### Backend (Robust)
 
-- **Theme**: Dark Mode (`class="dark"`).
-- **Colors**:
-  - Background: `Zinc 950` (#09090b)
-  - Primary: `Violet 600` (#7c3aed)
-  - Card: `Zinc 950` with `Zinc 800` borders.
-- **Components** (`/src/components/ui`):
-  - `button.jsx`: Variants (default, outline, ghost, destructive).
-  - `card.jsx`: Compositional card components.
-  - `input.jsx`: Styled input fields.
-  - `table.jsx`: Data display.
-  - `badge.jsx`: Status indicators.
-- **Layout**:
-  - `Layout.jsx`: Responsive Sidebar + Header + Breadcrumb area.
+- **Runtime**: Node.js 20 (Alpine)
+- **Framework**: Fastify v5 (Latest)
+- **Database**: PostgreSQL 16 + Kysely (Type-safe Builder)
+- **Key Libs**: `nanoid` (v3 for CJS), `axios`.
+
+### Frontend (Bleeding Edge)
+
+- **Framework**: React 19 + Vite (High Performance)
+- **Routing**: React Router v7
+- **Styling**: Tailwind CSS v3.4 + Shadcn UI (Manual Components)
+- **State**: Local State + Context (Simple & Effective)
+
+### Security posture
+
+- **Secrets**: AES-256-GCM encryption for all stored tokens.
+- **Network**: Internal Docker network. Nginx reverse proxy.
+- **Gaps**: No login screen for the Hub itself. **Localhost use only strictly recommended.**
 
 ---
 
@@ -46,47 +50,31 @@ oauth_webhook_hub/
 ├── .env                # Secrets (NOT committed)
 ├── .env.example        # Template
 ├── docker-compose.yml  # Orchestration
-├── README.md           # GitHub Entry
+├── README.md           # GitHub Interface
+├── .gitignore          # Rules
 ├── Docs/
 │   ├── EASY_SETUP.md
 │   ├── DOCUMENTATION.md
-│   └── TechSpec.md
+│   ├── TechSpec.md
+│   └── TECH_AUDIT.md   # Full Stack Analysis
 ├── backend/
 │   ├── Dockerfile
+│   ├── package.json    # Fastify v5 deps
 │   ├── src/
-│   │   ├── index.js    # Entry Point (Fastify)
+│   │   ├── index.js    # Entry Point
 │   │   ├── db/
-│   │   │   ├── connection.js
-│   │   │   ├── migrate.js
-│   │   │   └── migrations/ (SQL files)
-│   │   ├── routes/
-│   │   │   ├── hooks.js
-│   │   │   ├── oauth.js
-│   │   │   ├── providers.js
-│   │   │   └── webhook.js (Receiver)
-│   │   └── services/
-│   │       ├── encryption.js (AES-256)
-│   │       └── oauth.js (PKCE/State)
+│   │   │   ├── migrations/ (SQL)
+│   │   ├── routes/     # API Endpoints
+│   │   └── services/   # Business Logic
 ├── frontend/
 │   ├── Dockerfile
+│   ├── package.json    # React 19 deps
 │   ├── tailwind.config.js
-│   ├── postcss.config.js
 │   ├── src/
-│   │   ├── index.css   # Global styles & Variables
-│   │   ├── App.jsx     # Routes
-│   │   ├── main.jsx
 │   │   ├── lib/
-│   │   │   ├── api.js  # Axios Client
-│   │   │   └── utils.js (cn helper)
-│   │   ├── components/
-│   │   │   ├── Layout.jsx
-│   │   │   ├── Modal.jsx (Dialog)
-│   │   │   └── ui/ (Shadcn components)
-│   │   └── pages/
-│   │       ├── Dashboard.jsx
-│   │       ├── Providers.jsx
-│   │       ├── Tokens.jsx
-│   │       └── Webhooks.jsx
+│   │   ├── components/ # Reusable UI
+│   │   ├── pages/      # Route Views
+│   │   └── index.css   # Global Styles
 └── nginx/
     └── nginx.conf      # Reverse Proxy
 ```
@@ -96,8 +84,7 @@ oauth_webhook_hub/
 ## 🔗 Critical Dependencies & config
 
 1.  **Encryption Key**: `ENCRYPTION_KEY` in `.env` (32-byte hex) is **CRITICAL**. losing this means losing access to all stored Client Secrets and Tokens.
-2.  **Database URL**: Connection string for Postgres.
-3.  **App Base URL**: Used for generating Redirect URIs.
+2.  **App Base URL**: Used for generating Redirect URIs. `http://localhost` for local.
 
 ---
 
@@ -105,30 +92,26 @@ oauth_webhook_hub/
 
 ### ✅ Completed
 
-- [x] Initial Docker Setup
-- [x] Database Schema & Migrations
-- [x] Backend CRUD (Providers, Webhooks)
-- [x] Webhook Ingestion Engine
-- [x] OAuth Flow (Redirect > Token Exchange > Storage)
-- [x] UI/UX Overhaul (Shadcn + Dark Theme)
-- [x] Documentation & Reorganization
+- [x] Initial Docker Setup & Database
+- [x] Backend API & Webhook Engine
+- [x] OAuth Flow (PKCE)
+- [x] UI/UX Overhaul (React 19 + Shadcn)
+- [x] Technology Audit (See `Docs/TECH_AUDIT.md`)
 
-### ⏳ Pending / Future Considerations
+### 🚀 Next Steps (Prioritized)
 
-- [ ] **Token Refresh Daemon**: Automatically refresh expiring tokens.
-- [ ] **Request Replay**: Button to resend a captured webhook to a local target.
-- [ ] **Filtering**: Search/Filter logs in the Webhook Inspector.
-- [ ] **Export**: JSON export of captured logs.
-- [ ] **User Auth**: Protect the Hub itself with a login (currently open network).
+1.  **User Authentication**: Protect the Hub with a login screen (JWT/Session).
+2.  **Refresh Token Daemon**: Background service to rotate tokens automatically.
+3.  **Export Data**: Ability to export logs/tokens to JSON.
 
 ---
 
 ## 💡 Notes for Agent
 
-- **Docs**: All documentation files (SETUP, TECHSPEC, etc.) are located in `Docs/`.
-- **Frontend Build**: Requires `npm run build` in `frontend/`. Watch out for Tailwind version mismatch (Use v3.4.17).
-- **Database**: If DB isn't healthy, Backend will fail startup. Docker Compose healthchecks handle this usually.
-- **Imports**: Frontend uses `import { cn } from '../lib/utils'`, be careful with relative paths when moving files.
+- **Docs**: All documentation files (SETUP, TECHSPEC, AUDIT) are located in `Docs/`.
+- **Frontend Build**: Requires `npm run build` in `frontend/`.
+- **Versions**: Fastify v5 (Backend), React 19 (Frontend).
+- **Paths**: Always use absolute paths.
 
 ---
 

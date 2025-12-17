@@ -39,6 +39,4 @@ yarn-error.log*
 # Docker
 .docker/
 
-# Gemini Context (Agent Memory)
-GEMINI.md
-.gemini/
+
