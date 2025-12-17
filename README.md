@@ -33,6 +33,7 @@ Whether you are building an **n8n workflow**, a custom automation script, or jus
 ### 🪝 Webhook Inspector
 
 - **Instant Endpoints**: Generate unique webhook URLs (`/hook/xyz`) on the fly.
+- **Custom Domains**: Bind webhooks to wildcard subdomains (`stripe.oauthhub.work.gd`) for professional, clean hooks.
 - **Real-time Logging**: Inspect headers, body, and query parameters of incoming requests.
 - **Forwarding**: Automatically forward incoming webhooks to your local dev environment or other services (like n8n).
 

@@ -73,6 +73,14 @@ A webhook is a way for an app to send automated messages or information to anoth
 2. Click on the request log to see the **Headers**, **Body**, and **Metadata**.
 3. Use this info to debug your integrations.
 
+### 4. Custom Domains (Sub-Bindings)
+
+1. Go to the **Custom Domains** page (Sidebar).
+2. Click **New Binding**.
+3. Choose a **Subdomain Prefix** (e.g., `stripe`) and select a target Webhook.
+4. Your webhook is now accessible at `http://stripe.oauthhub.work.gd` (or your configured domain).
+5. All requests to this subdomain are logged under the selected Webhook.
+
 ---
 
 ## ⚙️ System Architecture

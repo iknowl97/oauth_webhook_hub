@@ -118,17 +118,61 @@ oauth_webhook_hub/
 
 _Last Updated: 2025-12-17_
 
---Custom updates by Author--
+## **Custom rules by Author do not edit them**
 
 # Zero Tolerance rules and instructions
 
-1. Do not work outside Project directory.
-2. Use Context7 for retrieving information about components apis ... etc documentations of technologies used in the project.
-3. Always update all related files incluging GEMINI.md , readme.md and ofcourse the project files in ./Docs/ folder.
-4. Implement informative updates as task lists , mark done and progress tasks, write updates in the form of task lists add comments to each task.
+1. Strictly confine all work operations to the Project directory structure. Never create, modify, or access files outside the designated project boundaries.
+
+2. Utilize Context7 as the primary knowledge base for retrieving comprehensive documentation about:
+
+   - Component APIs
+   - Technology specifications
+   - Framework documentation
+   - Project-specific implementation details
+
+3. Maintain thorough documentation updates across all relevant files including:
+
+   - GEMINI.md (project specifications)
+   - readme.md (project overview)
+   - ./Docs/ directory files (detailed documentation)
+     Ensure all modifications are synchronized across these documentation sources
+
+4. Implement task management through structured updates:
+
+   - Format all updates as detailed task lists
+   - Clearly mark task status (Done/In Progress/Pending)
+   - Include timestamped progress comments for each task
+   - Maintain comprehensive change logs with rationale for modifications
+
+5. Follow strict version control protocols using Git:
+   - Use the built-in /git-commiter workflow exclusively
+   - Commit after each logical unit of work completion
+   - Craft commit messages that include:
+     - Human-readable change descriptions
+     - Technical implementation details
+     - Context for future reference (both human and AI)
+   - Maintain atomic commits representing single logical changes
+   - Never force push or rewrite published history
+   6. Always specify "\_Last Updated:" in GEMINI.md in top of file including hour+minute
 
 ### Note to aknowledge environment
 
 This is my local pc running on windows (i cannot redirect any ports here so i use localhost here and you also act regarding thsi information). so i have a remote server running on ubuntu where i can redirect ports and use it as a reverse proxy. how i did already and our build (3adcc6ad2e2920cda843aa0a1a293ff56ef2dfc7) is deployed already on that server under http://oauthhub.work.gd/. You cna browse it using Browser Agent.
+
+# Note to understand project
+
+The main idea behind webhook and oauth project is to offer a simple, no-setup solution for developers who need to test webhook integrations without running their own servers or setting up complex local environments. By sending webhooks to the provided URL, users can instantly see the request details—including headers, payload, and metadata—helping them troubleshoot and understand how webhooks work in practice.​
+
+What webhook and oauth project Does
+Generates a unique webhook URL for each session.​
+
+Allows developers to send webhooks from various services and inspect the received data in real time.​
+
+Is free to use and does not require account creation.​
+
+Webhooks will have ability to be deleted after scheduled days in GUI when adding or editing webhook settings.
+
+Similar autonomous automation for OAUTH flow. I want it to be as simple as possible. I want it to be able to handle all the steps of the OAUTH flow. Regarding most popular OAUTH providers (like Google, Facebook, Shopify, Slack, Mailchimp, Trello, GitHub, PayPal, Discord, and Jira. etc.) I want it to be able to handle them without any additional configuration. 
 
 ---
