@@ -98,12 +98,13 @@ oauth_webhook_hub/
 - [x] UI/UX Overhaul (React 19 + Shadcn)
 - [x] Technology Audit (See `Docs/TECH_AUDIT.md`)
 - [x] **Webhook Sub-Binding System** (Wildcard Subdomains)
+- [x] **User Authentication** (JWT + Single Admin)
 
 ### 🚀 Next Steps (Prioritized)
 
 1.  **Remote Proxy Config**: Configure remote Nginx/Traefik to handle `*.oauthhub.work.gd` and forward to local instance.
-2.  **User Authentication**: Protect the Hub with a login screen (JWT/Session).
-3.  **Refresh Token Daemon**: Background service to rotate tokens automatically.
+2.  **Refresh Token Daemon**: Background service to rotate tokens automatically.
+3.  **Data Export**: JSON export for logs and tokens.
 
 ---
 
@@ -116,7 +117,7 @@ oauth_webhook_hub/
 
 ---
 
-_Last Updated: 2025-12-17_
+_Last Updated: 2025-12-18 01:25_
 
 ## **Custom rules by Author do not edit them**
 
@@ -155,10 +156,12 @@ _Last Updated: 2025-12-17_
    - Maintain atomic commits representing single logical changes
    - Never force push or rewrite published history
    6. Always specify "\_Last Updated:" in GEMINI.md in top of file including hour+minute
+   7. always create neccessary variables in .env file for autonomous testing. Including example generated passwords and example users
 
 ### Note to aknowledge environment
 
 This is my local pc running on windows (i cannot redirect any ports here so i use localhost here and you also act regarding thsi information). so i have a remote server running on ubuntu where i can redirect ports and use it as a reverse proxy. how i did already and our build (3adcc6ad2e2920cda843aa0a1a293ff56ef2dfc7) is deployed already on that server under http://oauthhub.work.gd/. You cna browse it using Browser Agent.
+Use this browser to perform Automated Tests (Manual Run) after implementing each feature.
 
 # Note to understand project
 
@@ -173,6 +176,6 @@ Is free to use and does not require account creation.​
 
 Webhooks will have ability to be deleted after scheduled days in GUI when adding or editing webhook settings.
 
-Similar autonomous automation for OAUTH flow. I want it to be as simple as possible. I want it to be able to handle all the steps of the OAUTH flow. Regarding most popular OAUTH providers (like Google, Facebook, Shopify, Slack, Mailchimp, Trello, GitHub, PayPal, Discord, and Jira. etc.) I want it to be able to handle them without any additional configuration. 
+Similar autonomous automation for OAUTH flow. I want it to be as simple as possible. I want it to be able to handle all the steps of the OAUTH flow. Regarding most popular OAUTH providers (like Google, Facebook, Shopify, Slack, Mailchimp, Trello, GitHub, PayPal, Discord, and Jira. etc.) I want it to be able to handle them without any additional configuration.
 
 ---

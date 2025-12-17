@@ -21,6 +21,11 @@ const start = async () => {
     await migrateToLatest();
 
     // Register Routes
+    fastify.register(require('./routes/auth'), { prefix: '/api/auth' });
+    
+    // Global Auth Guard
+    fastify.addHook('onRequest', require('./hooks/requireAuth'));
+
     fastify.register(providerRoutes);
     fastify.register(require('./routes/hooks'));
     fastify.register(require('./routes/webhook'));

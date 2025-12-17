@@ -4,6 +4,14 @@
 
 The **OAuth & Webhook Hub** is a tool designed to sit between your third-party services (like Google, Stripe, Notion) and your automation tools (like n8n, Python scripts, or local apps). It simplifies the authentication process and debugging.
 
+## 🛡️ Authentication
+
+The Hub is protected by a single admin password (configured in `.env` as `ADMIN_PASSWORD`).
+
+- **Dashboard**: Accessing the main interface requires logging in.
+- **API**: Management endpoints (create/delete) require a `Bearer` token.
+- **Public Access**: Webhook ingestion endpoints (`/hook/*`) and OAuth callbacks (`/oauth/callback`) remain public to function correctly.
+
 ---
 
 ## 🛡️ OAuth Hub Guide

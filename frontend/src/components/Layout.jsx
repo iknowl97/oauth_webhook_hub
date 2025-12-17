@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Key, Plug, Shield, Menu, Globe } from 'lucide-react';
+import { LayoutDashboard, Key, Plug, Shield, Menu, Globe, LogOut } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/button';
+import { useAuth } from '../context/AuthContext';
 
 const SidebarItem = ({ to, icon: Icon, label }) => {
   const location = useLocation();
@@ -21,6 +22,8 @@ const SidebarItem = ({ to, icon: Icon, label }) => {
 };
 
 export default function Layout({ children }) {
+  const { logout } = useAuth();
+
   return (
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
@@ -40,8 +43,18 @@ export default function Layout({ children }) {
           <SidebarItem to="/subdomains" icon={Globe} label="Custom Domains" />
         </nav>
 
-        <div className="p-4 border-t text-xs text-muted-foreground text-center">
-            OAuth & Webhook Hub v1.0
+        <div className="p-4 border-t space-y-4">
+            <Button 
+                variant="ghost" 
+                className="w-full justify-start gap-3 text-muted-foreground hover:text-foreground hover:bg-destructive/10 hover:text-destructive"
+                onClick={logout}
+            >
+                <LogOut size={18} />
+                Logout
+            </Button>
+            <div className="text-xs text-muted-foreground text-center">
+                OAuth & Webhook Hub v1.0
+            </div>
         </div>
       </aside>
 
