@@ -122,6 +122,9 @@ _Expected Output_: `oauthhub-backend`, `oauthhub-frontend`, `oauthhub-db`, `oaut
 **Issue**: "Migration Failed"
 **Fix**: Check container logs: `docker logs oauthhub-backend`.
 
+**Issue**: "DNS/SSL errors with sub-sub-domains"
+**Fix**: Simplify domain structure (e.g., `oauthhub.work.gd` instead of `oauhub.ragflow.work.gd`). Update `APP_BASE_URL` in `.env` and host proxy config.
+
 ---
 
 **Approval**: This deployment process is **Validated** for production use.

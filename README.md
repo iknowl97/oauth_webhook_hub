@@ -110,6 +110,27 @@ For comprehensive documentation on features, see **[DOCUMENTATION.md](./Docs/DOC
 
 ---
 
+## 5. Troubleshooting
+
+**Issue**: "Address already in use"
+**Fix**: Check `docker-compose.yml` port mappings. Ensure host ports (e.g., 443) aren't taken by other services (like a host-level Nginx).
+
+**Issue**: "Backend restarting loop"
+**Fix**: Likely Database Password mismatch.
+
+1. Check `.env` for `$$` escaping.
+2. Run `docker compose down -v` to reset DB volume and re-initialize password.
+
+**Issue**: "DNS/SSL errors with sub-sub-domains"
+**Description**: Using deep subdomains (e.g., `app.dev.example.com`) can cause SSL issuance failures or DNS propagation delays.
+**Fix**: Simplify to a single-level subdomain (e.g., `app.example.com`).
+
+1. Update `APP_BASE_URL` in `.env`.
+2. Update your host Nginx config.
+3. Restart: `docker compose up -d`.
+
+---
+
 ## 📸 Screenshots
 
 _(Add your screenshots here)_
