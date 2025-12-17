@@ -12,13 +12,13 @@ fastify.get('/health', async (request, reply) => {
   return { status: 'ok', timestamp: new Date() };
 });
 
-const { migrate } = require('./db/migrate');
+const { migrateToLatest } = require('./db/migrator');
 const providerRoutes = require('./routes/providers');
 
 const start = async () => {
   try {
     // Wait for DB to be ready and run migrations
-    await migrate();
+    await migrateToLatest();
 
     // Register Routes
     fastify.register(providerRoutes);

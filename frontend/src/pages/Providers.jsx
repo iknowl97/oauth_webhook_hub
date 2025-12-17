@@ -1,23 +1,36 @@
 import { useEffect, useState } from 'react';
 import { getProviders, createProvider, deleteProvider } from '../lib/api';
-import { Plus, Trash2, Key, Globe, Shield, Lock } from 'lucide-react';
+import { Plus, Trash2, Key, Link2, Shield } from "lucide-react";
+import { ProviderPresetsGrid } from "@/components/ProviderPresetsGrid";
 import Modal from '../components/Modal';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
+import { DialogHeader, DialogTitle, DialogDescription } from '../components/ui/dialog'; // Assuming these are from ui/dialog
+import { Label } from '../components/ui/label'; // Assuming this is from ui/label
 
 export default function Providers() {
   const [providers, setProviders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: '', type: 'oauth2', client_id: '', client_secret: '',
-    auth_url: '', token_url: '', scopes: ''
+    name: '', authorization_url: '', token_url: '', client_id: '', client_secret: '',
+    scope: ''
   });
 
   const load = async () => setProviders(await getProviders());
   useEffect(() => { load(); }, []);
+
+  const handlePresetSelect = (preset) => {
+    setFormData({
+      ...formData,
+      name: preset.name,
+      authorization_url: preset.authUrl,
+      token_url: preset.tokenUrl,
+      scope: preset.scope
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,10 +38,13 @@ export default function Providers() {
     try {
       await createProvider({
         ...formData,
-        scopes: formData.scopes.split(',').map(s => s.trim()).filter(Boolean)
+        scopes: formData.scope.split(',').map(s => s.trim()).filter(Boolean),
+        auth_url: formData.authorization_url,
+        token_url: formData.token_url,
+        type: 'oauth2' // Defaulting to oauth2 as 'type' field was removed from form
       });
       setIsModalOpen(false);
-      setFormData({ name: '', type: 'oauth2', client_id: '', client_secret: '', auth_url: '', token_url: '', scopes: '' });
+      setFormData({ name: '', authorization_url: '', token_url: '', client_id: '', client_secret: '', scope: '' });
       load();
     } catch (err) {
       alert('Failed: ' + err.message);
@@ -67,7 +83,7 @@ export default function Providers() {
              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-primary/10 text-primary rounded-lg ring-1 ring-primary/20">
-                        {p.type === 'oidc' ? <Globe size={20} /> : <Shield size={20} />}
+                        {p.type === 'oidc' ? <Link2 size={20} /> : <Shield size={20} />}
                     </div>
                     <div>
                         <CardTitle className="text-lg">{p.name}</CardTitle>
@@ -113,39 +129,71 @@ export default function Providers() {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Configure Provider">
         <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-                <label className="text-sm font-medium">Provider Name</label>
-                <Input required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="e.g. GitHub" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                   <label className="text-sm font-medium">Type</label>
-                   <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})}>
-                       <option value="oauth2">OAuth 2.0</option>
-                       <option value="oidc">OIDC</option>
-                   </select>
-                </div>
-                <div className="space-y-2">
-                     <label className="text-sm font-medium">Scopes</label>
-                     <Input value={formData.scopes} onChange={e => setFormData({...formData, scopes: e.target.value})} placeholder="profile, email" />
-                </div>
-            </div>
-            <div className="space-y-2">
-                <label className="text-sm font-medium">Client ID</label>
-                <Input required value={formData.client_id} onChange={e => setFormData({...formData, client_id: e.target.value})} />
-            </div>
-            <div className="space-y-2">
-                <label className="text-sm font-medium">Client Secret</label>
-                <Input type="password" value={formData.client_secret} onChange={e => setFormData({...formData, client_secret: e.target.value})} />
-            </div>
-            <div className="space-y-2">
-                <label className="text-sm font-medium">Auth URL</label>
-                <Input required type="url" value={formData.auth_url} onChange={e => setFormData({...formData, auth_url: e.target.value})} placeholder="https://..." />
-            </div>
-            <div className="space-y-2">
-                <label className="text-sm font-medium">Token URL</label>
-                <Input required type="url" value={formData.token_url} onChange={e => setFormData({...formData, token_url: e.target.value})} placeholder="https://..." />
+            <DialogHeader>
+              <DialogTitle>Add New Provider</DialogTitle>
+              <DialogDescription>
+                Configure a new OAuth provider or choose a preset.
+              </DialogDescription>
+            </DialogHeader>
+            
+            <ProviderPresetsGrid onSelect={handlePresetSelect} />
+
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Provider Name</Label>
+                <Input 
+                  id="name" 
+                  placeholder="e.g. Google" 
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="authorization_url">Authorization URL</Label>
+                <Input 
+                    id="authorization_url" 
+                    type="url"
+                    placeholder="https://accounts.google.com/o/oauth2/v2/auth" 
+                    value={formData.authorization_url}
+                    onChange={(e) => setFormData({...formData, authorization_url: e.target.value})}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="token_url">Token URL</Label>
+                <Input 
+                    id="token_url" 
+                    type="url"
+                    placeholder="https://oauth2.googleapis.com/token" 
+                    value={formData.token_url}
+                    onChange={(e) => setFormData({...formData, token_url: e.target.value})}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="client_id">Client ID</Label>
+                <Input 
+                    id="client_id" 
+                    value={formData.client_id}
+                    onChange={(e) => setFormData({...formData, client_id: e.target.value})}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="client_secret">Client Secret</Label>
+                <Input 
+                    id="client_secret" 
+                    type="password"
+                    value={formData.client_secret}
+                    onChange={(e) => setFormData({...formData, client_secret: e.target.value})}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="scope">Default Scopes (Comma separated)</Label>
+                <Input 
+                    id="scope" 
+                    placeholder="profile,email" 
+                    value={formData.scope}
+                    onChange={(e) => setFormData({...formData, scope: e.target.value})}
+                />
+              </div>
             </div>
             <div className="pt-2">
                 <Button type="submit" className="w-full" disabled={loading}>
