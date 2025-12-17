@@ -13,7 +13,7 @@ export function ProviderPresetsGrid({ onSelect, className }) {
             key={preset.id}
             type="button"
             onClick={() => onSelect(preset)}
-            className="group relative flex flex-col items-center justify-center gap-2 p-3 rounded-xl border border-border bg-card hover:bg-muted/50 transition-all hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring"
+            className="group relative flex flex-col items-center justify-center gap-2 p-3 rounded-xl border border-black/5 bg-white/60 hover:bg-white/90 transition-all hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring"
           >
             <div 
                 className="p-2 rounded-full transition-colors group-hover:bg-background"

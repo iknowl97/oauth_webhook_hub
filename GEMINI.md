@@ -191,5 +191,14 @@ Similar autonomous automation for OAUTH flow. I want it to be as simple as possi
 3. OAUTH Flow Visualizer (GUI)
    - Provides a step-by-step visualization of the OAUTH flow for selected providers.
    - Shows the exchange of tokens, authorization codes, and access tokens.
+4. OAUTH Token Storage (GUI)
+   - Stores and manages OAUTH tokens securely for each provider.
+   - Allows users to view, refresh, or revoke tokens as needed.
+5. Pre checking mechanism for OAUTH flow
+   - Checks if the required OAUTH scopes are granted before allowing access.
+   - Provides clear feedback to users if scopes are missing or revoked.
+6. Integrating simple step by step guides for OAUTH flow
+   - Offers step-by-step instructions for setting up OAUTH integrations with different providers.
+   - Includes clear explanations of required configurations and permissions.
 
----s
+---
