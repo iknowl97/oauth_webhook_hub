@@ -118,7 +118,7 @@ oauth_webhook_hub/
 
 ---
 
-_Last Updated: 2025-12-18 01:25_
+_Last Updated: 2025-12-18 02:15_
 
 ## **Custom rules by Author do not edit them**
 
@@ -180,25 +180,13 @@ Webhooks will have ability to be deleted after scheduled days in GUI when adding
 
 Similar autonomous automation for OAUTH flow. I want it to be as simple as possible. I want it to be able to handle all the steps of the OAUTH flow. Regarding most popular OAUTH providers (like Google, Facebook, Shopify, Slack, Mailchimp, Trello, GitHub, PayPal, Discord, and Jira. etc.) I want it to be able to handle them without any additional configuration.
 
-# Feature List for feature (Ideas)
+### 🔮 Roadmap V2: Enhanced Analysis & Automation
 
-1. Payload Difference Viewer (GUI)
-   - Allows users to compare payloads of different webhooks visually.
-   - Highlights changes and similarities between payloads.
-2. Webhook Log Viewer (GUI)
-   - Displays a history of all received webhooks with detailed information.
-   - Allows users to filter logs by webhook type, time period, or specific events.
-3. OAUTH Flow Visualizer (GUI)
-   - Provides a step-by-step visualization of the OAUTH flow for selected providers.
-   - Shows the exchange of tokens, authorization codes, and access tokens.
-4. OAUTH Token Storage (GUI)
-   - Stores and manages OAUTH tokens securely for each provider.
-   - Allows users to view, refresh, or revoke tokens as needed.
-5. Pre checking mechanism for OAUTH flow
-   - Checks if the required OAUTH scopes are granted before allowing access.
-   - Provides clear feedback to users if scopes are missing or revoked.
-6. Integrating simple step by step guides for OAUTH flow
-   - Offers step-by-step instructions for setting up OAUTH integrations with different providers.
-   - Includes clear explanations of required configurations and permissions.
+Detailed technical plans available in [`Docs/ROADMAP_EXTENDED.md`](file:///c:/Users/gioam/Desktop/oauth_webhook_hub/Docs/ROADMAP_EXTENDED.md).
 
----
+4.  **OAuth Token Storage (GUI)**: Manage, refresh, and revoke credentials.
+5.  **Webhook Log Viewer (GUI)**: Advanced filtering and deep history.
+6.  **Payload Difference Viewer (GUI)**: Visual JSON diffs for schema debugging.
+7.  **Interactive Integration Guides**: Wizard-style setup for popular providers.
+8.  **OAuth Flow Visualizer (GUI)**: Educational step-by-step flow diagrams.
+9.  **Pre-checking Mechanism**: Scope validation and "Dry Run" auth tests.
