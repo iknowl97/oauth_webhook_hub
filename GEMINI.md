@@ -188,5 +188,8 @@ Similar autonomous automation for OAUTH flow. I want it to be as simple as possi
 2. Webhook Log Viewer (GUI)
    - Displays a history of all received webhooks with detailed information.
    - Allows users to filter logs by webhook type, time period, or specific events.
+3. OAUTH Flow Visualizer (GUI)
+   - Provides a step-by-step visualization of the OAUTH flow for selected providers.
+   - Shows the exchange of tokens, authorization codes, and access tokens.
 
 ---
