@@ -5,42 +5,58 @@
 ## User Review Required
 
 > [!IMPORTANT]
-> This is a major visual overhaul. The app will shift from a full-screen dashboard to a centralized "Floating Mac Window" design. This affects `Layout.jsx` and all main page containers.
+> This is a major visual overhaul. The app will shift from a full-screen dashboard to a centralized "Floating Mac Window" design.
 
 ## Proposed Changes
 
-### 1. Global Layout (`frontend/src/components/Layout.jsx`)
+### 1. Global Styles & Variables
 
-- **Move to Floating Container**:
-  - Remove full-screen `min-h-screen` background.
-  - Wrap the entire app (`Sidebar` + `Main`) in a `div.fixed.inset-0.flex.items-center.justify-center` with the LCH Radial Gradient background.
-  - Create the **App Card**: A `div` with `w-[95vw] h-[90vh] max-w-[1600px] rounded-[32px] overflow-hidden` + `shadow-2xl`.
-- **Glass Sidebar**:
-  - Update sidebar to be semi-transparent with `backdrop-blur-xl`.
-  - Remove solid border-right, use subtle white/10 border.
+#### [MODIFY] [index.css](file:///c:/Users/gioam/Desktop/oauth_webhook_hub/frontend/src/index.css)
 
-### 2. Dashboard / Home (`frontend/src/pages/Dashboard.jsx`)
+- **Key Implementation Points**:
+  - Define new **LCH Color Variables** for the background gradient.
+  - Set `body` background to the radial gradient `lch(94 0 0) -> lch(83 0 0)`.
+  - Enforce `font-family: 'Inter', sans-serif` globally.
+  - Remove any legacy `@layer base` defaults that conflict with the floating design.
 
-- **Empty State Redesign**:
-  - Replace current text-heavy intro with a clean, centered call-to-action.
-  - Use the "Traffic Light" dots (top-left) purely for aesthetic matching if desirable, or map to actual controls.
+### 2. Main Layout Architecture
 
-### 3. Modals & Dialogs (All Pages)
+#### [MODIFY] [Layout.jsx](file:///c:/Users/gioam/Desktop/oauth_webhook_hub/frontend/src/components/Layout.jsx)
 
-- **Glass Modals**:
-  - Update `DialogContent` (Shadcn) to use `bg-black/80` + `backdrop-blur-md` instead of solid colors.
-  - Increase border radius to `rounded-2xl`.
+- **Key Implementation Points**:
+  - **Outer Wrapper**: `fixed inset-0 flex items-center justify-center p-4` to center the app.
+  - **App Container**:
+    - `w-full max-w-[1600px] h-[90vh]` (Responsive: `h-full` on mobile).
+    - `rounded-[32px] overflow-hidden shadow-2xl bg-background/50 backdrop-blur-sm` (Glass base).
+    - `border border-white/20` (Subtle rim).
+  - **Sidebar**:
+    - Change from `w-64 border-r` to standard width but with `bg-transparent`.
+    - Content will rely on the parent App Container's background.
 
-### 4. Typography & Colors
+### 3. Component Overrides (Glassmorphism)
 
-- **Global CSS (`index.css`)**:
-  - Enforce `Inter` font family.
-  - Update `:root` variables to match the extracted LCH colors for backgrounds.
+#### [MODIFY] [dialog.jsx](file:///c:/Users/gioam/Desktop/oauth_webhook_hub/frontend/src/components/ui/dialog.jsx)
+
+#### [MODIFY] [sheet.jsx](file:///c:/Users/gioam/Desktop/oauth_webhook_hub/frontend/src/components/ui/sheet.jsx)
+
+- **Key Implementation Points**:
+  - **Overlays**: Increase blur to `backdrop-blur-md`.
+  - **Content**: Change `bg-background` to `bg-black/80` (or `bg-white/80` in light mode) with `backdrop-blur-xl`.
+  - **Borders**: Ensure borders are `border-white/10`.
+
+### 4. Dashboard (First Impression)
+
+#### [MODIFY] [Dashboard.jsx](file:///c:/Users/gioam/Desktop/oauth_webhook_hub/frontend/src/pages/Dashboard.jsx)
+
+- **Key Implementation Points**:
+  - Remove the "Welcome" card.
+  - Implement the "Empty State" design: A centered, clean graphic or text explaining "Waiting for requests..."
+  - Ensure the route fits seamlessly into the new `Layout` main content area (which should be distinct from the sidebar).
 
 ## Verification Plan
 
 ### Manual Layout Check
 
-1.  **Open Localhost**: Verify the app "floats" in the center.
-2.  **Resize Window**: Ensure responsiveness (on mobile, it should likely revert to full screen or adapt gracefully).
-3.  **Check Blur**: Verify sidebar elements blur the content behind them (if overlapping) or just the background.
+1.  **Desktop View**: Confirm the app is a floating rounded card, not full-screen.
+2.  **Mobile View**: Confirm it gracefully falls back to full width/height or maintains a card look if space permits.
+3.  **Visuals**: Check that the background is a smooth gradient and not solid gray.
