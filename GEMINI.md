@@ -157,6 +157,7 @@ _Last Updated: 2025-12-18 01:25_
    - Never force push or rewrite published history
    6. Always specify "\_Last Updated:" in GEMINI.md in top of file including hour+minute
    7. always create neccessary variables in .env file for autonomous testing. Including example generated passwords and example users
+   8. Run test on local pc after UI and curl tests i will deploy to remote server and run tests there manually.
 
 ### Note to aknowledge environment
 
