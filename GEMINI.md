@@ -110,7 +110,8 @@ oauth_webhook_hub/
 
 ## 💡 Notes for Agent
 
-- **Docs**: All documentation files (SETUP, TECHSPEC, AUDIT) are located in `Docs/`.
+- **Docs**: All documentation files (SETUP, TECHSPEC, AUDIT, **DESIGN_GUIDELINES**) are located in `Docs/`.
+- **Design Standard**: Strictly follow `Docs/DESIGN_GUIDELINES.md` ("Floating Glass" aesthetic).
 - **Frontend Build**: Requires `npm run build` in `frontend/`.
 - **Versions**: Fastify v5 (Backend), React 19 (Frontend).
 - **Paths**: Always use absolute paths.
@@ -178,5 +179,14 @@ Is free to use and does not require account creation.​
 Webhooks will have ability to be deleted after scheduled days in GUI when adding or editing webhook settings.
 
 Similar autonomous automation for OAUTH flow. I want it to be as simple as possible. I want it to be able to handle all the steps of the OAUTH flow. Regarding most popular OAUTH providers (like Google, Facebook, Shopify, Slack, Mailchimp, Trello, GitHub, PayPal, Discord, and Jira. etc.) I want it to be able to handle them without any additional configuration.
+
+# Feature List for feature (Ideas)
+
+1. Payload Difference Viewer (GUI)
+   - Allows users to compare payloads of different webhooks visually.
+   - Highlights changes and similarities between payloads.
+2. Webhook Log Viewer (GUI)
+   - Displays a history of all received webhooks with detailed information.
+   - Allows users to filter logs by webhook type, time period, or specific events.
 
 ---
