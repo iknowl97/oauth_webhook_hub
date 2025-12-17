@@ -5,6 +5,7 @@
 ![Node.js](https://img.shields.io/badge/backend-Fastify-black?logo=nodedotjs)
 ![React](https://img.shields.io/badge/frontend-React-61DAFB?logo=react)
 ![Tailwind](https://img.shields.io/badge/style-Tailwind-38B2AC?logo=tailwindcss)
+![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL-336791?logo=postgresql)
 
 > **A self-hosted, centralized Swiss Army Knife for managing OAuth 2.0 flows and inspecting Webhooks.**
 
@@ -103,9 +104,9 @@ We have designed this project to be "zero-config" for local usage.
 4. **Access the Hub**
    Open **[http://localhost](http://localhost)** in your browser.
 
-For a detailed step-by-step guide, see **[EASY_SETUP.md](./EASY_SETUP.md)**.
+For a detailed step-by-step guide, see **[EASY_SETUP.md](./Docs/EASY_SETUP.md)**.
 
-For comprehensive documentation on features, see **[DOCUMENTATION.md](./DOCUMENTATION.md)**.
+For comprehensive documentation on features, see **[DOCUMENTATION.md](./Docs/DOCUMENTATION.md)**.
 
 ---
 

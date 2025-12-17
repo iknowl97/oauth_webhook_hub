@@ -15,7 +15,7 @@
 | **Backend API**    | ✅ Done | Fastify, Routes for Providers, OAuth (PKCE), Webhooks. |
 | **Security**       | ✅ Done | AES-256-GCM Encryption for secrets.                    |
 | **Frontend UI**    | ✅ Done | React + Vite. **Modern Dark Theme** (Shadcn/Tailwind). |
-| **Documentation**  | ✅ Done | README, EASY_SETUP, TechSpec.                          |
+| **Documentation**  | ✅ Done | README, EASY_SETUP, TechSpec (Moved to `Docs/`).       |
 
 ---
 
@@ -47,7 +47,10 @@ oauth_webhook_hub/
 ├── .env.example        # Template
 ├── docker-compose.yml  # Orchestration
 ├── README.md           # GitHub Entry
-├── EASY_SETUP.md       # Deployment Guide
+├── Docs/
+│   ├── EASY_SETUP.md
+│   ├── DOCUMENTATION.md
+│   └── TechSpec.md
 ├── backend/
 │   ├── Dockerfile
 │   ├── src/
@@ -108,7 +111,7 @@ oauth_webhook_hub/
 - [x] Webhook Ingestion Engine
 - [x] OAuth Flow (Redirect > Token Exchange > Storage)
 - [x] UI/UX Overhaul (Shadcn + Dark Theme)
-- [x] Documentation
+- [x] Documentation & Reorganization
 
 ### ⏳ Pending / Future Considerations
 
@@ -122,6 +125,7 @@ oauth_webhook_hub/
 
 ## 💡 Notes for Agent
 
+- **Docs**: All documentation files (SETUP, TECHSPEC, etc.) are located in `Docs/`.
 - **Frontend Build**: Requires `npm run build` in `frontend/`. Watch out for Tailwind version mismatch (Use v3.4.17).
 - **Database**: If DB isn't healthy, Backend will fail startup. Docker Compose healthchecks handle this usually.
 - **Imports**: Frontend uses `import { cn } from '../lib/utils'`, be careful with relative paths when moving files.
