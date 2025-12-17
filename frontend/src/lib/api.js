@@ -16,4 +16,8 @@ export const getWebhookRequests = (id) => api.get(`/api/hooks/${id}/requests`).t
 export const getTokens = () => api.get('/api/tokens').then(r => r.data);
 export const deleteToken = (id) => api.delete(`/api/tokens/${id}`).then(r => r.data);
 
+export const getSubdomains = () => api.get('/api/subdomains').then(r => r.data);
+export const createSubdomain = (data) => api.post('/api/subdomains', data).then(r => r.data);
+export const deleteSubdomain = (id) => api.delete(`/api/subdomains/${id}`).then(r => r.data);
+
 export default api;

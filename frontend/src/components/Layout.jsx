@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Key, Plug, Shield, Menu } from 'lucide-react';
+import { LayoutDashboard, Key, Plug, Shield, Menu, Globe } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/button';
 
@@ -37,6 +37,7 @@ export default function Layout({ children }) {
           <SidebarItem to="/providers" icon={Shield} label="Providers" />
           <SidebarItem to="/tokens" icon={Key} label="Tokens" />
           <SidebarItem to="/webhooks" icon={Plug} label="Webhooks" />
+          <SidebarItem to="/subdomains" icon={Globe} label="Custom Domains" />
         </nav>
 
         <div className="p-4 border-t text-xs text-muted-foreground text-center">

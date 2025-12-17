@@ -35,9 +35,11 @@ async function up(db) {
       .addColumn('id', 'text', (col) => col.primaryKey())
       .addColumn('name', 'text')
       .addColumn('provider', 'text')
-      .addColumn('payload', 'jsonb')
-      .addColumn('headers', 'jsonb')
-      .addColumn('received_at', 'timestamp', (col) => col.defaultTo(sql`now()`))
+      .addColumn('forward_url', 'text')
+      .addColumn('response_status', 'integer', (col) => col.defaultTo(200))
+      .addColumn('response_headers', 'jsonb')
+      .addColumn('response_body_template', 'text')
+      .addColumn('created_at', 'timestamp', (col) => col.defaultTo(sql`now()`))
       .execute();
 }
 

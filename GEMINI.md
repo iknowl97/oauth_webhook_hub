@@ -97,12 +97,13 @@ oauth_webhook_hub/
 - [x] OAuth Flow (PKCE)
 - [x] UI/UX Overhaul (React 19 + Shadcn)
 - [x] Technology Audit (See `Docs/TECH_AUDIT.md`)
+- [x] **Webhook Sub-Binding System** (Wildcard Subdomains)
 
 ### 🚀 Next Steps (Prioritized)
 
-1.  **User Authentication**: Protect the Hub with a login screen (JWT/Session).
-2.  **Refresh Token Daemon**: Background service to rotate tokens automatically.
-3.  **Export Data**: Ability to export logs/tokens to JSON.
+1.  **Remote Proxy Config**: Configure remote Nginx/Traefik to handle `*.oauthhub.work.gd` and forward to local instance.
+2.  **User Authentication**: Protect the Hub with a login screen (JWT/Session).
+3.  **Refresh Token Daemon**: Background service to rotate tokens automatically.
 
 ---
 
@@ -116,3 +117,18 @@ oauth_webhook_hub/
 ---
 
 _Last Updated: 2025-12-17_
+
+--Custom updates by Author--
+
+# Zero Tolerance rules and instructions
+
+1. Do not work outside Project directory.
+2. Use Context7 for retrieving information about components apis ... etc documentations of technologies used in the project.
+3. Always update all related files incluging GEMINI.md , readme.md and ofcourse the project files in ./Docs/ folder.
+4. Implement informative updates as task lists , mark done and progress tasks, write updates in the form of task lists add comments to each task.
+
+### Note to aknowledge environment
+
+This is my local pc running on windows (i cannot redirect any ports here so i use localhost here and you also act regarding thsi information). so i have a remote server running on ubuntu where i can redirect ports and use it as a reverse proxy. how i did already and our build (3adcc6ad2e2920cda843aa0a1a293ff56ef2dfc7) is deployed already on that server under http://oauthhub.work.gd/. You cna browse it using Browser Agent.
+
+---

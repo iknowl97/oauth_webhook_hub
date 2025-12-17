@@ -25,6 +25,14 @@ const start = async () => {
     fastify.register(require('./routes/hooks'));
     fastify.register(require('./routes/webhook'));
     fastify.register(require('./routes/oauth'));
+    
+    // Subdomain Management
+    fastify.register(require('./routes/subdomains'), { prefix: '/api/subdomains' });
+    
+    // Subdomain wildcard dispatcher (Must be last to avoid conflicts?)
+    // Actually it uses valid Hooks or distinct matches, so order matters less, 
+    // but good practice to keep it separate or last.
+    fastify.register(require('./routes/dispatcher'));
 
     await fastify.listen({ port: PORT, host: HOST });
     console.log(`Server listening on ${HOST}:${PORT}`);

@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getProviders, createProvider, deleteProvider } from '../lib/api';
 import { Plus, Trash2, Key, Link2, Shield } from "lucide-react";
-import { ProviderPresetsGrid } from "@/components/ProviderPresetsGrid";
+import { ProviderPresetsGrid } from "../components/ProviderPresetsGrid";
 import Modal from '../components/Modal';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { DialogHeader, DialogTitle, DialogDescription } from '../components/ui/dialog'; // Assuming these are from ui/dialog
-import { Label } from '../components/ui/label'; // Assuming this is from ui/label
 
 export default function Providers() {
   const [providers, setProviders] = useState([]);
@@ -129,18 +127,18 @@ export default function Providers() {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Configure Provider">
         <form onSubmit={handleSubmit} className="space-y-4">
-            <DialogHeader>
-              <DialogTitle>Add New Provider</DialogTitle>
-              <DialogDescription>
+            <div className="space-y-1.5 text-center sm:text-left">
+              <h3 className="text-lg font-semibold leading-none tracking-tight">Add New Provider</h3>
+              <p className="text-sm text-muted-foreground">
                 Configure a new OAuth provider or choose a preset.
-              </DialogDescription>
-            </DialogHeader>
+              </p>
+            </div>
             
             <ProviderPresetsGrid onSelect={handlePresetSelect} />
 
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="name">Provider Name</Label>
+                <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Provider Name</label>
                 <Input 
                   id="name" 
                   placeholder="e.g. Google" 
@@ -149,7 +147,7 @@ export default function Providers() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="authorization_url">Authorization URL</Label>
+                <label htmlFor="authorization_url" className="text-sm font-medium leading-none">Authorization URL</label>
                 <Input 
                     id="authorization_url" 
                     type="url"
@@ -159,7 +157,7 @@ export default function Providers() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="token_url">Token URL</Label>
+                <label htmlFor="token_url" className="text-sm font-medium leading-none">Token URL</label>
                 <Input 
                     id="token_url" 
                     type="url"
@@ -169,7 +167,7 @@ export default function Providers() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="client_id">Client ID</Label>
+                <label htmlFor="client_id" className="text-sm font-medium leading-none">Client ID</label>
                 <Input 
                     id="client_id" 
                     value={formData.client_id}
@@ -177,7 +175,7 @@ export default function Providers() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="client_secret">Client Secret</Label>
+                <label htmlFor="client_secret" className="text-sm font-medium leading-none">Client Secret</label>
                 <Input 
                     id="client_secret" 
                     type="password"
@@ -186,7 +184,7 @@ export default function Providers() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="scope">Default Scopes (Comma separated)</Label>
+                <label htmlFor="scope" className="text-sm font-medium leading-none">Default Scopes (Comma separated)</label>
                 <Input 
                     id="scope" 
                     placeholder="profile,email" 
