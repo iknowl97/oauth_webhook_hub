@@ -33,7 +33,8 @@ cd oauth-webhook-hub
 
 ### 2. Configure Settings
 
-We have provided a default configuration file. You just need to activate it.
+We have provided a default configuration file. You just need to activate it and set your secrets.
+
 **Windows (PowerShell):**
 
 ```powershell
@@ -45,6 +46,14 @@ copy .env.example .env
 ```bash
 cp .env.example .env
 ```
+
+**⚠️ IMPORTANT CONFIGURATION:**
+Open the newly created `.env` file in a text editor (Notepad, VS Code, etc.).
+Find the line `ENCRYPTION_KEY`.
+Change the default value to a unique, secure password.
+
+- **Why?** This key encrypts your OAuth tokens and client secrets in the database.
+- **Warning:** If you change this key later, all previously stored tokens will become unreadable. **Do not lose this key.**
 
 ### 3. Start the Engines
 

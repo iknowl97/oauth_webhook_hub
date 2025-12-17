@@ -52,6 +52,23 @@ Whether you are building an **n8n workflow**, a custom automation script, or jus
 
 ---
 
+## ⚙️ Configuration
+
+The project is configured using a `.env` file. You must copy `.env.example` to `.env` and adjust the values.
+
+### 🔐 Environment Variables Explained
+
+| Variable           | Description                                                                                                                                                       | Example / Default          |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| **APP_BASE_URL**   | The public URL of your Hub. Used for generating redirect URIs. For local dev, this matches Nginx.                                                                 | `http://localhost`         |
+| **APP_ENV**        | Environment mode (`development` or `production`).                                                                                                                 | `production`               |
+| **APP_PORT**       | Internal backend port (mapped in Docker).                                                                                                                         | `3000`                     |
+| **DB\_...**        | Database credentials. `DB_HOST` must be `db` inside Docker.                                                                                                       | `db` / `oauthhub`          |
+| **ENCRYPTION_KEY** | **CRITICAL**. A master password used to encrypt stored Client Secrets and Tokens. **If you lose this, you lose your data.** It is hashed to create a 32-byte key. | `my-super-secret-key-1234` |
+| **JWT_SECRET**     | Secret used for signing session tokens (future user auth).                                                                                                        | `random-string`            |
+
+---
+
 ## 🏁 Getting Started
 
 We have designed this project to be "zero-config" for local usage.
@@ -75,7 +92,7 @@ We have designed this project to be "zero-config" for local usage.
    cp .env.example .env
    ```
 
-   _Note: The default `.env` is pre-configured for local development._
+   _Note: Open `.env` and set your own secure `ENCRYPTION_KEY`._
 
 3. **Run with Docker**
 
