@@ -156,6 +156,87 @@ async function oauthRoutes(fastify, options) {
             .execute();
         return tokens;
     });
+
+    // Reveal Token (DECRYPT)
+    fastify.get('/api/tokens/:id/reveal', async (request, reply) => {
+        const { id } = request.params;
+        const token = await db.selectFrom('oauth_tokens')
+            .select(['access_token', 'refresh_token'])
+            .where('id', '=', id)
+            .executeTakeFirst();
+        
+        if (!token) return reply.code(404).send({ error: 'Token not found' });
+        
+        return {
+            access_token: decrypt(token.access_token),
+            refresh_token: token.refresh_token ? decrypt(token.refresh_token) : null
+        };
+    });
+
+    // Refresh Token
+    fastify.post('/api/tokens/:id/refresh', async (request, reply) => {
+        const { id } = request.params;
+        const { refreshTokenExchange } = require('../services/oauth');
+
+        const token = await db.selectFrom('oauth_tokens')
+            .innerJoin('oauth_providers', 'oauth_tokens.provider_id', 'oauth_providers.id')
+            .select([
+                'oauth_tokens.id', 
+                'oauth_tokens.refresh_token', 
+                'oauth_providers.token_url', 
+                'oauth_providers.client_id', 
+                'oauth_providers.client_secret'
+            ])
+            .where('oauth_tokens.id', '=', id)
+            .executeTakeFirst();
+
+        if (!token || !token.refresh_token) {
+            return reply.code(400).send({ error: 'Token not found or no refresh token available' });
+        }
+
+        try {
+            const decRefresh = decrypt(token.refresh_token);
+            const decSecret = token.client_secret ? decrypt(token.client_secret) : null;
+            
+            const newData = await refreshTokenExchange(
+                token.token_url,
+                decRefresh,
+                token.client_id,
+                decSecret
+            );
+
+            // Update DB
+            const encAccess = encrypt(newData.access_token);
+            const encRefresh = newData.refresh_token ? encrypt(newData.refresh_token) : null; // Some rotate, some don't
+            
+            const updateData = {
+                access_token: encAccess,
+                expires_at: newData.expires_in ? new Date(Date.now() + newData.expires_in * 1000) : null,
+                created_at: new Date() // Treat as new?
+            };
+            if (encRefresh) updateData.refresh_token = encRefresh;
+
+            await db.updateTable('oauth_tokens')
+                .set(updateData)
+                .where('id', '=', id)
+                .execute();
+
+            return { success: true, expires_in: newData.expires_in };
+
+        } catch (err) {
+            request.log.error(err);
+            return reply.code(500).send({ error: 'Refresh failed: ' + (err.response?.data?.error || err.message) });
+        }
+    });
+
+    // Revoke Token (Local Delete for now, scalable to Upstream Revoke later)
+    fastify.post('/api/tokens/:id/revoke', async (request, reply) => {
+        const { id } = request.params;
+        // Ideally call provider revoke endpoint if known.
+        // For MVP, deleting it is 'revoking access' for the Hub.
+        await db.deleteFrom('oauth_tokens').where('id', '=', id).execute();
+        return { success: true };
+    });
     
     // Delete Token
     fastify.delete('/api/tokens/:id', async (request, reply) => {

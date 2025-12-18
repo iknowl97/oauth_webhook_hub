@@ -37,4 +37,22 @@ async function exchangeToken(tokenUrl, code, clientId, clientSecret, redirectUri
   return response.data;
 }
 
-module.exports = { generateState, generatePKCE, exchangeToken };
+async function refreshTokenExchange(tokenUrl, refreshToken, clientId, clientSecret) {
+  const params = new URLSearchParams();
+  params.append('grant_type', 'refresh_token');
+  params.append('refresh_token', refreshToken);
+  params.append('client_id', clientId);
+  if (clientSecret) {
+    params.append('client_secret', clientSecret);
+  }
+
+  const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json'
+  };
+
+  const response = await axios.post(tokenUrl, params, { headers });
+  return response.data;
+}
+
+module.exports = { generateState, generatePKCE, exchangeToken, refreshTokenExchange };

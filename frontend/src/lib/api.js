@@ -15,6 +15,9 @@ export const getWebhookRequests = (id) => api.get(`/api/hooks/${id}/requests`).t
 
 export const getTokens = () => api.get('/api/tokens').then(r => r.data);
 export const deleteToken = (id) => api.delete(`/api/tokens/${id}`).then(r => r.data);
+export const refreshToken = (id) => api.post(`/api/tokens/${id}/refresh`).then(r => r.data);
+export const revokeToken = (id) => api.post(`/api/tokens/${id}/revoke`).then(r => r.data);
+export const revealToken = (id) => api.get(`/api/tokens/${id}/reveal`).then(r => r.data);
 
 export const getSubdomains = () => api.get('/api/subdomains').then(r => r.data);
 export const createSubdomain = (data) => api.post('/api/subdomains', data).then(r => r.data);
