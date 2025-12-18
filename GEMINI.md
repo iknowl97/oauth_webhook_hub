@@ -118,7 +118,7 @@ oauth_webhook_hub/
 
 ---
 
-_Last Updated: 2025-12-18 02:20_
+_Last Updated: 2025-12-18 09:35_
 
 ## **Custom rules by Author do not edit them**
 
@@ -224,13 +224,13 @@ Webhooks will have ability to be deleted after scheduled days in GUI when adding
 
 Similar autonomous automation for OAUTH flow. I want it to be as simple as possible. I want it to be able to handle all the steps of the OAUTH flow. Regarding most popular OAUTH providers (like Google, Facebook, Shopify, Slack, Mailchimp, Trello, GitHub, PayPal, Discord, and Jira. etc.) I want it to be able to handle them without any additional configuration.
 
-### 🔮 Roadmap V2: Enhanced Analysis & Automation
+### 🔮 Roadmap V2 & Master Plan
 
-Detailed technical plans available in [`Docs/ROADMAP_EXTENDED.md`](file:///c:/Users/gioam/Desktop/oauth_webhook_hub/Docs/ROADMAP_EXTENDED.md).
+Detailed execution strategy is consolidated in [`Docs/ROADMAP_EXTENDED.md`](Docs/ROADMAP_EXTENDED.md).
 
-4.  **OAuth Token Storage (GUI)**: Manage, refresh, and revoke credentials.
-5.  **Webhook Log Viewer (GUI)**: Advanced filtering and deep history.
-6.  **Payload Difference Viewer (GUI)**: Visual JSON diffs for schema debugging.
-7.  **Interactive Integration Guides**: Wizard-style setup for popular providers.
-8.  **OAuth Flow Visualizer (GUI)**: Educational step-by-step flow diagrams.
-9.  **Pre-checking Mechanism**: Scope validation and "Dry Run" auth tests.
+**Key Phases:**
+
+1.  **Core Reliability**: Robust Kysely Migrations, Provider Presets.
+2.  **Security**: Token Lifecycle (Refresh/Revoke), Pre-checking.
+3.  **Visibility**: Log Analytics, Payload Diff, Retention Settings.
+4.  **Experience**: Flow Visualizer, Interactive Guides.
