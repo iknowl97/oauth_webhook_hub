@@ -165,6 +165,50 @@ _Last Updated: 2025-12-18 02:20_
 This is my local pc running on windows (i cannot redirect any ports here so i use localhost here and you also act regarding thsi information). so i have a remote server running on ubuntu where i can redirect ports and use it as a reverse proxy. how i did already and our build (3adcc6ad2e2920cda843aa0a1a293ff56ef2dfc7) is deployed already on that server under http://oauthhub.work.gd/. You cna browse it using Browser Agent.
 Use this browser to perform Automated Tests (Manual Run) after implementing each feature.
 
+ALso i'll specify here remote serer structure for testing:
+
+```bash
+Last login: Thu Dec 18 00:05:31 2025 from 127.0.0.1
+-bash: /www/server/panel/pyenv/bin/python: Permission denied
+gioam@gioam:~$ sudo -s
+[sudo] password for gioam:
+root@gioam:/home/gioam# cd dockerS/
+root@gioam:/home/gioam/dockerS# git clone https://github.com/iknowl97/oauth_webhook_hub.git
+Cloning into 'oauth_webhook_hub'...
+remote: Enumerating objects: 4045, done.
+remote: Counting objects: 100% (4045/4045), done.
+remote: Compressing objects: 100% (3006/3006), done.
+remote: Total 4045 (delta 922), reused 4019 (delta 896), pack-reused 0 (from 0)
+Receiving objects: 100% (4045/4045), 3.08 MiB | 2.27 MiB/s, done.
+Resolving deltas: 100% (922/922), done.
+root@gioam:/home/gioam/dockerS# cd oauth_webhook_hub/
+root@gioam:/home/gioam/dockerS/oauth_webhook_hub# docker-compose up -d
+[+] Running 4/4
+ ✔ Container oauthhub-db        Healthy                                                                                    1.2s
+ ✔ Container oauthhub-backend   Running                                                                                    0.0s
+ ✔ Container oauthhub-frontend  Started                                                                                    0.9s
+ ✔ Container oauthhub-nginx     Running                                                                                    0.0s
+root@gioam:/home/gioam/dockerS/oauth_webhook_hub# docker-compose down  -d
+unknown shorthand flag: 'd' in -d
+root@gioam:/home/gioam/dockerS/oauth_webhook_hub# docker-compose down  -v
+[+] Running 6/6
+ ✔ Container oauthhub-nginx            Removed                                                                             0.4s
+ ✔ Container oauthhub-frontend         Removed                                                                             0.3s
+ ✔ Container oauthhub-backend          Removed                                                                             0.8s
+ ✔ Container oauthhub-db               Removed                                                                             0.3s
+ ✔ Volume oauth_webhook_hub_db_data    Removed                                                                             0.1s
+ ✔ Network oauth_webhook_hub_internal  Removed                                                                             0.2s
+root@gioam:/home/gioam/dockerS/oauth_webhook_hub# docker-compose up -d
+[+] Running 6/6
+ ✔ Network oauth_webhook_hub_internal  Created                                                                             0.1s
+ ✔ Volume "oauth_webhook_hub_db_data"  Created                                                                             0.0s
+ ✔ Container oauthhub-db               Healthy                                                                            11.0s
+ ✔ Container oauthhub-frontend         Started                                                                             0.5s
+ ✔ Container oauthhub-backend          Started                                                                            11.2s
+ ✔ Container oauthhub-nginx            Started                                                                            11.5s
+root@gioam:/home/gioam/dockerS/oauth_webhook_hub#
+```
+
 # Note to understand project
 
 The main idea behind webhook and oauth project is to offer a simple, no-setup solution for developers who need to test webhook integrations without running their own servers or setting up complex local environments. By sending webhooks to the provided URL, users can instantly see the request details—including headers, payload, and metadata—helping them troubleshoot and understand how webhooks work in practice.​
