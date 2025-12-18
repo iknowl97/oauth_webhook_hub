@@ -44,7 +44,7 @@
 
 ---
 
-## 📂 Project File Tree
+## 📂 Project File Tree (Current State)
 
 ```
 oauth_webhook_hub/
@@ -53,76 +53,106 @@ oauth_webhook_hub/
 ├── docker-compose.yml  # Orchestration
 ├── README.md           # GitHub Interface
 ├── .gitignore          # Rules
+├── Source/             # 📥 PRIMARY INPUT: Raw resources waiting for processing
+├── Processed/          # 📤 OUTPUT: Validated and normalized resources
+├── tools/
+│   └── process_resources.js # ⚙️ AUTOMATION: Naming & Validation script
 ├── Docs/
 │   ├── EASY_SETUP.md
 │   ├── DOCUMENTATION.md
 │   ├── TechSpec.md
-│   ├── TECH_AUDIT.md   # Full Stack Analysis
+│   ├── TECH_AUDIT.md
 │   └── ROADMAP_EXTENDED.md
 ├── backend/
 │   ├── Dockerfile
-│   ├── package.json    # Fastify v5 deps
+│   ├── package.json
 │   ├── src/
-│   │   ├── index.js    # Entry Point
+│   │   ├── index.js
 │   │   ├── db/
-│   │   │   ├── migrations/ (SQL)
-│   │   ├── routes/     # API Endpoints
-│   │   └── services/   # Business Logic
+│   │   ├── routes/
+│   │   └── services/
 ├── frontend/
 │   ├── Dockerfile
-│   ├── package.json    # React 19 deps
-│   ├── tailwind.config.js
+│   ├── package.json
 │   ├── src/
 │   │   ├── lib/
-│   │   ├── components/ # Reusable UI
-│   │   ├── pages/      # Route Views
-│   │   └── index.css   # Global Styles
+│   │   ├── components/
+│   │   └── pages/
 └── nginx/
-    └── nginx.conf      # Reverse Proxy
+    └── nginx.conf
 ```
 
 ---
 
-## 🔗 Critical Dependencies & config
+## � Resource Processing Workflow
 
-1.  **Encryption Key**: `ENCRYPTION_KEY` in `.env` (32-byte hex) is **CRITICAL**. losing this means losing access to all stored Client Secrets and Tokens.
-2.  **App Base URL**: Used for generating Redirect URIs. `http://localhost` for local.
+### 1. Purpose & Access
 
----
+The **Source** folder serves as the single point of entry for all project assets (images, logos, data files).
 
-## 📝 Plan & Roadmap
+- **Location**: Root directory `/Source`
+- **Supported Types**: `.png`, `.jpg`, `.json`, `.csv`, `.md`
+- **Max Size**: 50MB per file
 
-### ✅ Completed (v1.0.0)
+### 2. Processing Steps
 
-- [x] Initial Docker Setup & Database
-- [x] Backend API & Webhook Engine
-- [x] OAuth Flow (PKCE) with **Auto Access Token Exchange**
-- [x] UI/UX Overhaul (React 19 + Shadcn)
-- [x] **Provider Presets** (Spotify, Google, GitHub, etc.)
-- [x] **Token Management** (Refresh, Revoke, Reveal)
-- [x] **Production Hardening** (HTTPS Enforcement, Redirect URI Fixes)
-- [x] **User Authentication** (JWT + Single Admin)
-- [x] **Webhook Sub-Binding System** (Wildcard Subdomains)
-
-### 🚀 Next Steps (v1.1+)
-
-1.  **Data Export**: JSON export for logs and tokens.
-2.  **Flow Visualizer**: Interactive diagram of the OAuth journey.
-3.  **Webhook Analytics**: Retention policies and basic stats.
+1.  **Input**: Place raw files into the `Source/` folder.
+2.  **Execution**: Run the automated pipeline:
+    ```bash
+    node tools/process_resources.js
+    ```
+3.  **Output**: Validated files are copied to `Processed/`.
+4.  **Logs**: Operations are recorded in `resource_processing.log`.
 
 ---
 
-## 💡 Notes for Agent
+## 🏷️ Naming Conventions
 
-- **Docs**: All documentation files (SETUP, TECHSPEC, AUDIT, **DESIGN_GUIDELINES**) are located in `Docs/`.
-- **Design Standard**: Strictly follow `Docs/DESIGN_GUIDELINES.md` ("Floating Glass" aesthetic).
-- **Frontend Build**: Requires `npm run build` in `frontend/`.
-- **Versions**: Fastify v5 (Backend), React 19 (Frontend).
-- **Paths**: Always use absolute paths.
+All resources must adhere to the following **Strict Naming Schema**:
+
+**Pattern**: `[ProjectID]_[ResourceType]_[YYYYMMDD]_[Version].ext`
+
+- **Constraint**: All lowercase, underscore separators.
+- **Length**: Maximum 64 characters.
+- **Format**:
+  - `ProjectID`: `oauthhub`
+  - `ResourceType`: e.g., `logo`, `config`, `dump`
+  - `Date`: `YYYYMMDD` (Year Month Day)
+  - `Version`: `v` + Integer (e.g., `v1`)
+
+### Examples
+
+| Status         | Filename                            | Reason                           |
+| :------------- | :---------------------------------- | :------------------------------- |
+| ✅ **Valid**   | `oauthhub_logo_20251219_v1.png`     | Follows all rules.               |
+| ✅ **Valid**   | `oauthhub_config_20250101_v20.json` | Valid versioning.                |
+| ❌ **Invalid** | `Logo_Final.png`                    | Uppercase, missing date/version. |
+| ❌ **Invalid** | `oauthhub-data-2025.csv`            | Wrong separator (hyphen).        |
 
 ---
 
-_Last Updated: 2025-12-18 17:15_
+## ✅ Validation Procedures
+
+The `tools/process_resources.js` system enforces:
+
+1.  **Naming Compliance**: Regex check `^[a-z0-9]+_[a-z0-9]+_\d{8}_v\d+\.[a-z]+$`
+2.  **Integrity**:
+    - **Count**: Ensures matched `Source` files exist in `Processed`.
+    - **Metadata**: Preserves `mtime` (Modification Time) during copy.
+3.  **Audit**: Invalid files are flagged in the console and log file; they are **NOT** copied.
+
+---
+
+## 📜 Version Control & Changelog
+
+| Date       | Author   | Modification                                                                     |
+| :--------- | :------- | :------------------------------------------------------------------------------- |
+| 2025-12-19 | iknowl97 | **v1.1 Structure Update**: Added Source/Processed folders and validation script. |
+| 2025-12-18 | iknowl97 | **v1.0 Release**: Completed OAuth Presets & Security Token Lifecycle.            |
+
+---
+
+_Last Updated: 2025-12-19 00:45_
 
 ## **Custom rules by Author do not edit them**
 
