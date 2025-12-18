@@ -22,7 +22,8 @@ async function oauthRoutes(fastify, options) {
 
             const state = generateState();
             const { verifier, challenge } = generatePKCE();
-            const callbackUrl = `${APP_BASE_URL}/api/oauth/callback`;
+            const baseUrl = APP_BASE_URL.endsWith('/') ? APP_BASE_URL.slice(0, -1) : APP_BASE_URL;
+            const callbackUrl = `${baseUrl}/api/oauth/callback`;
 
             // Store session
             // Previous migration fix ensures oauth_sessions has all columns
