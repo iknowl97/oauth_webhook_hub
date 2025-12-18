@@ -99,7 +99,7 @@ We have designed this project to be "zero-config" for local usage.
 3. **Run with Docker**
 
    ```bash
-   docker compose up -d
+   docker compose up -d --build
    ```
 
 4. **Access the Hub**
