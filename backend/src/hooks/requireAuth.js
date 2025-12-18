@@ -3,12 +3,13 @@ const jwt = require('jsonwebtoken');
 const publicPaths = [
     '/api/auth/login',
     '/api/health',
-    '/oauth/callback', // Public endpoint for OAuth providers
+    '/api/oauth/callback', // Fixed path
 ];
 
 // Prefixes that are always public
 const publicPrefixes = [
     '/hook/', // Public webhook ingestion
+    '/api/oauth/start/', // Must be public for browser navigation/popup
 ];
 
 async function requireAuth(request, reply) {
