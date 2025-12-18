@@ -1,16 +1,17 @@
 const { generateState, generatePKCE, exchangeToken } = require('../services/oauth');
 const { encrypt, decrypt } = require('../services/encryption');
+const { sql } = require('kysely'); // Added for sql`gen_random_uuid()`
 
 async function oauthRoutes(fastify, options) {
     const { db } = require('../db/connection');
     const APP_BASE_URL = process.env.APP_BASE_URL;
 
     // Start OAuth Flow
-    fastify.get('/oauth/start/:providerId', async (request, reply) => {
+    // GET /api/oauth/start/:id?redirect_back=URL
+    fastify.get('/api/oauth/start/:providerId', async (request, reply) => {
         const { providerId } = request.params;
-        const { label, redirect_back } = request.query;
+        const { redirect_back, preview } = request.query;
 
-        // 1. Get Provider
         const provider = await db.selectFrom('oauth_providers')
             .selectAll()
             .where('id', '=', providerId)
@@ -18,42 +19,46 @@ async function oauthRoutes(fastify, options) {
         
         if (!provider) return reply.code(404).send({ error: 'Provider not found' });
 
-        // 2. Generate State & PKCE
         const state = generateState();
         const { verifier, challenge } = generatePKCE();
-        const callbackUrl = `${APP_BASE_URL}/oauth/callback`;
+        const callbackUrl = `${APP_BASE_URL}/api/oauth/callback`;
 
-        // 3. Store Session
+        // Store session
+        // Previous migration fix ensures oauth_sessions has all columns
         await db.insertInto('oauth_sessions')
             .values({
+                id: sql`gen_random_uuid()`, // Allow explicit ID if needed, or default
                 provider_id: provider.id,
                 state: state,
                 code_verifier: verifier,
-                redirect_back: redirect_back || '/',
-                label: label || 'Default',
+                redirect_back: redirect_back || null,
                 created_at: new Date(),
-                expires_at: new Date(Date.now() + 10 * 60 * 1000) // 10 mins
+                expires_at: new Date(Date.now() + 1000 * 60 * 10) // 10 mins
             })
             .execute();
 
-        // 4. Construct Auth URL
-        const authUrl = new URL(provider.auth_url);
-        authUrl.searchParams.append('response_type', 'code');
-        authUrl.searchParams.append('client_id', provider.client_id);
-        authUrl.searchParams.append('redirect_uri', callbackUrl);
-        authUrl.searchParams.append('state', state);
+        // Build URL
+        const url = new URL(provider.auth_url);
+        url.searchParams.append('response_type', 'code');
+        url.searchParams.append('client_id', provider.client_id);
+        url.searchParams.append('redirect_uri', callbackUrl);
+        url.searchParams.append('state', state);
         
+        // Scope handling
+        let scopeStr = '';
+        if (Array.isArray(provider.scopes)) scopeStr = provider.scopes.join(' ');
+        else if (typeof provider.scopes === 'string') scopeStr = provider.scopes;
+        
+        if (scopeStr) url.searchParams.append('scope', scopeStr);
+
         // PKCE
-        authUrl.searchParams.append('code_challenge', challenge);
-        authUrl.searchParams.append('code_challenge_method', 'S256');
+        url.searchParams.append('code_challenge', challenge);
+        url.searchParams.append('code_challenge_method', 'S256');
 
-        if (provider.scopes && provider.scopes.length > 0) {
-            authUrl.searchParams.append('scope', provider.scopes.join(' '));
-        }
-
+        // Extra params
         if (provider.extra_params) {
             Object.entries(provider.extra_params).forEach(([k, v]) => {
-                authUrl.searchParams.append(k, v);
+                url.searchParams.append(k, v);
             });
         }
 

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { getProviders, createProvider, deleteProvider } from '../lib/api';
-import { Plus, Trash2, Key, Link2, Shield } from "lucide-react";
+import { Plus, Trash2, Key, Link2, Shield, Eye } from "lucide-react";
 import { ProviderPresetsGrid } from "../components/ProviderPresetsGrid";
 import Modal from '../components/Modal';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
+import { api } from '../lib/api'; // Import raw api for custom GET
 
 export default function Providers() {
   const [providers, setProviders] = useState([]);
@@ -39,7 +40,7 @@ export default function Providers() {
         scopes: formData.scope.split(',').map(s => s.trim()).filter(Boolean),
         auth_url: formData.authorization_url,
         token_url: formData.token_url,
-        type: 'oauth2' // Defaulting to oauth2 as 'type' field was removed from form
+        type: 'oauth2'
       });
       setIsModalOpen(false);
       setFormData({ name: '', authorization_url: '', token_url: '', client_id: '', client_secret: '', scope: '' });
@@ -61,6 +62,15 @@ export default function Providers() {
   const startAuth = (providerId) => {
     const url = `${import.meta.env.VITE_API_BASE}/oauth/start/${providerId}?redirect_back=${window.location.origin}/tokens`;
     window.open(url, 'oauth_window', 'width=600,height=700');
+  };
+
+  const previewAuth = async (providerId) => {
+      try {
+        const res = await api.get(`/api/oauth/start/${providerId}?preview=true`);
+        prompt("Dry Run URL (Copy to inspect):", res.data.url);
+      } catch (e) {
+          alert("Failed to generate preview");
+      }
   };
 
   return (
@@ -111,10 +121,15 @@ export default function Providers() {
              </CardContent>
 
              <CardFooter>
-                 <Button onClick={() => startAuth(p.id)} className="w-full" variant="secondary">
-                     <Key className="mr-2 h-3 w-3" />
-                     Start Auth Flow
-                 </Button>
+                  <div className="flex gap-2">
+                     <Button onClick={() => previewAuth(p.id)} className="flex-1" variant="outline" title="Preview Auth URL">
+                          <Eye className="w-4 h-4 mr-2"/> Dry Run
+                      </Button>
+                      <Button onClick={() => startAuth(p.id)} className="flex-[2]" variant="secondary">
+                          <Key className="mr-2 h-3 w-3" />
+                          Start Auth Flow
+                      </Button>
+                  </div>
              </CardFooter>
           </Card>
         ))}
