@@ -22,7 +22,11 @@ async function oauthRoutes(fastify, options) {
 
             const state = generateState();
             const { verifier, challenge } = generatePKCE();
-            const baseUrl = APP_BASE_URL.endsWith('/') ? APP_BASE_URL.slice(0, -1) : APP_BASE_URL;
+            let baseUrl = APP_BASE_URL.endsWith('/') ? APP_BASE_URL.slice(0, -1) : APP_BASE_URL;
+            // Force HTTPS for production domains to match Provider settings
+            if (!baseUrl.includes('localhost') && baseUrl.startsWith('http:')) {
+                baseUrl = baseUrl.replace('http:', 'https:');
+            }
             const callbackUrl = `${baseUrl}/api/oauth/callback`;
 
             // Store session
