@@ -60,7 +60,7 @@ Change the default value to a unique, secure password.
 Run this command to build and start the application. This might take a few minutes the first time as it downloads the necessary parts.
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 ### 4. Verify It's Running
