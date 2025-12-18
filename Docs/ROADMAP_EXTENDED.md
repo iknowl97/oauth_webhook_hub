@@ -4,26 +4,34 @@ This document is the **Single Source of Truth** for all upcoming features, syste
 
 ## 📅 Execution Phases
 
-| Phase       | Focus                     | Key Features                                             |
-| :---------- | :------------------------ | :------------------------------------------------------- |
-| **Phase 1** | **Core Reliability**      | Kysely Migrations, Provider Presets, Docker Optimization |
-| **Phase 2** | **Security & Management** | OAuth Token Storage, Refresh/Revoke, Pre-checking        |
-| **Phase 3** | **Data Visibility**       | Webhook Log Viewer, Payload Diff, Retention Settings     |
-| **Phase 4** | **Developer Experience**  | Integration Guides, Flow Visualizer                      |
+| Phase       | Focus                     | Key Features                                         | Status         |
+| :---------- | :------------------------ | :--------------------------------------------------- | :------------- |
+| **Phase 1** | **Core Reliability**      | Kysely Migrations, Custom Paths, Presets             | 🟡 In Progress |
+| **Phase 2** | **Security & Management** | OAuth Token Storage, Refresh/Revoke, Pre-checking    | 🔴 Pending     |
+| **Phase 3** | **Data Visibility**       | Webhook Log Viewer, Payload Diff, Retention Settings | 🔴 Pending     |
+| **Phase 4** | **Developer Experience**  | Integration Guides, Flow Visualizer                  | 🔴 Pending     |
 
 ---
 
 ## 🛠️ Phase 1: Core Reliability & Foundation
 
-### 1.1. Robust Migration Engine (Backend)
+### 1.1. Robust Migration Engine (Backend) ✅ Done
 
 **Goal:** Move from raw SQL files to a robust, rollback-capable migration system using Kysely.
 
+- **Status**: Implemented via `migrator.js` + `index.js` auto-run.
 - **Strategy**:
-  - Create `src/db/migrator.js` using `Kysely.Migrator`.
-  - Replicate existing SQL schema into TypeScript/JS migration files.
-  - Implement atomic updates and "Rollback" CLI command.
-  - **Why**: Essential for data safety before adding complex V2 features.
+  - Replicated SQL schema into JS migration files (`20251217_init.js`).
+  - Added `path` migration (`20251218_add_path_to_webhooks.js`).
+
+### 1.3. Custom Webhook Paths (Frontend/Backend) ✅ Done
+
+**Goal:** Allow users to define semantic URL slugs (e.g., `/hook/stripe-payment`).
+
+- **Features**:
+  - **UI**: Path input with base URL preview (n8n style).
+  - **Backend**: Validation and Unique Constraint.
+  - **Schema**: Added `path` column.
 
 ### 1.2. Provider Presets & Quirks (Frontend/Backend)
 
