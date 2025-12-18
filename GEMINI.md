@@ -242,25 +242,24 @@ Detailed execution strategy is consolidated in [`Docs/ROADMAP_EXTENDED.md`](Docs
 # Spotify API for tests
 
 ```markdown
-Dashboardoauth_hub_tests
-O
-Basic Information
-Basic Information
-User Management
 Client ID
 9fb77143edb2416f9991cd2e65be0e62
 App Status
 Development mode
+Client secret
+02c0e3c4a52d4d3f8871567a7a5f8d4c
 App name
 oauth_hub_tests
 App description
 This APP is for testing OAUTH
 Website
 Redirect URIs
-https://oauthhub.work.gd/rest/oauth2-credential/callback
+https://oauthhub.work.gd/tokens
 Bundle IDs
 Android packages
 APIs used
 Web API
 iOS
+Android
+
 ```
