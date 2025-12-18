@@ -165,6 +165,10 @@ _Last Updated: 2025-12-18 12:00_
 This is my local pc running on windows (i cannot redirect any ports here so i use localhost here and you also act regarding thsi information). so i have a remote server running on ubuntu where i can redirect ports and use it as a reverse proxy. how i did already and our build (3adcc6ad2e2920cda843aa0a1a293ff56ef2dfc7) is deployed already on that server under http://oauthhub.work.gd/. You cna browse it using Browser Agent.
 Use this browser to perform Automated Tests (Manual Run) after implementing each feature.
 
+# Important
+
+If you achieve step where it's neccessary for real deployement after running all local tests i will deploy to remote server output me commands to deploy to remote server. Then I will confirm deployment and You will run tests "https://oauthhub.work.gd/" there with this actuial domain.
+
 ALso i'll specify here remote serer structure for testing:
 
 ```bash

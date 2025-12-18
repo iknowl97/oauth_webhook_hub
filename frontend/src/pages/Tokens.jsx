@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getTokens, deleteToken, refreshToken, revealToken, revokeToken } from '../lib/api';
+import { getTokens, refreshToken, revealToken, revokeToken } from '../lib/api';
 import { Trash2, Copy, AlertCircle, RefreshCw, Eye, EyeOff, ShieldAlert } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';

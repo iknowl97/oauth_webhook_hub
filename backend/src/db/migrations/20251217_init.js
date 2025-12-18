@@ -7,7 +7,7 @@ async function up(db) {
     .ifNotExists()
     .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn('name', 'text', (col) => col.notNull())
-    .addColumn('type', 'text', (col) => col.notNull().check(sql`type IN ('oauth2', 'oidc')`))
+    .addColumn('type', 'text', (col) => col.notNull())
     .addColumn('auth_url', 'text')
     .addColumn('token_url', 'text')
     .addColumn('userinfo_url', 'text')
