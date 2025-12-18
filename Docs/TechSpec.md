@@ -500,26 +500,11 @@ docker compose logs -f backend
 4. Documentation + README
 5. Health checks + monitoring
 
-## 11. Roadmap V2 Specifications
+## 11. Roadmap & Future Implementation
 
-Detailed technical strategies are defined in `Docs/ROADMAP_EXTENDED.md`.
+> **Note**: The detailed, phased execution strategy is now maintained in [`Docs/ROADMAP_EXTENDED.md`](./ROADMAP_EXTENDED.md). Please refer to that document for the authoritative source on upcoming features, including:
 
-### 11.1. OAuth Token Storage & Lifecycle
-
-- **Endpoint**: `POST /api/tokens/:id/refresh`
-- **Logic**: Use stored `refresh_token` (decrypted) to request new access token from provider. Update DB with new tokens and expiry.
-- **Frontend**: Show countdown to expiry. "Reveal" button for access token.
-
-### 11.2. Webhook Log Analytics
-
-- **Querying**: `GET /api/webhooks/requests?hookId=...&method=POST&from=...&to=...`
-- **Indexing**: Add composite indexes on `webhook_requests` (webhook_id, created_at).
-
-### 11.3. Payload Difference Engine
-
-- **Client-Side**: Fetch two request IDs. Use `jsondiffpatch` or similar to compute delta. Render visual diff.
-
-### 11.4. Interactive Guides
-
-- **Schema**: JSON-based guide definition.
-- **Location**: `frontend/public/guides/*.json`.
+- **Phase 1**: Core Reliability (Migrations, Presets)
+- **Phase 2**: Security (Token Lifecycle, Pre-checking)
+- **Phase 3**: Analytics (Logs, Diff Viewer, Retention)
+- **Phase 4**: Experience (Guides, Visualizer)
