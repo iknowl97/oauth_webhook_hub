@@ -206,8 +206,8 @@ If you achieve step where it's neccessary for real deployement after running all
 ALso i'll specify here remote serer structure for testing:
 
 ```bash
-Last login: Thu Dec 18 00:05:31 2025 from 127.0.0.1
--bash: /www/server/panel/pyenv/bin/python: Permission denied
+
+
 gioam@gioam:~$ sudo -s
 [sudo] password for gioam:
 root@gioam:/home/gioam# cd dockerS/
@@ -220,30 +220,20 @@ remote: Total 4045 (delta 922), reused 4019 (delta 896), pack-reused 0 (from 0)
 Receiving objects: 100% (4045/4045), 3.08 MiB | 2.27 MiB/s, done.
 Resolving deltas: 100% (922/922), done.
 root@gioam:/home/gioam/dockerS# cd oauth_webhook_hub/
-root@gioam:/home/gioam/dockerS/oauth_webhook_hub# docker-compose up -d
-[+] Running 4/4
- ✔ Container oauthhub-db        Healthy                                                                                    1.2s
- ✔ Container oauthhub-backend   Running                                                                                    0.0s
- ✔ Container oauthhub-frontend  Started                                                                                    0.9s
- ✔ Container oauthhub-nginx     Running                                                                                    0.0s
+root@gioam:/home/gioam/dockerS/oauth_webhook_hub# docker-compose up -d0.0s
 root@gioam:/home/gioam/dockerS/oauth_webhook_hub# docker-compose down  -d
 unknown shorthand flag: 'd' in -d
 root@gioam:/home/gioam/dockerS/oauth_webhook_hub# docker-compose down  -v
 [+] Running 6/6
- ✔ Container oauthhub-nginx            Removed                                                                             0.4s
- ✔ Container oauthhub-frontend         Removed                                                                             0.3s
- ✔ Container oauthhub-backend          Removed                                                                             0.8s
- ✔ Container oauthhub-db               Removed                                                                             0.3s
- ✔ Volume oauth_webhook_hub_db_data    Removed                                                                             0.1s
- ✔ Network oauth_webhook_hub_internal  Removed                                                                             0.2s
+0.2s
 root@gioam:/home/gioam/dockerS/oauth_webhook_hub# docker-compose up -d
 [+] Running 6/6
- ✔ Network oauth_webhook_hub_internal  Created                                                                             0.1s
- ✔ Volume "oauth_webhook_hub_db_data"  Created                                                                             0.0s
- ✔ Container oauthhub-db               Healthy                                                                            11.0s
- ✔ Container oauthhub-frontend         Started                                                                             0.5s
- ✔ Container oauthhub-backend          Started                                                                            11.2s
- ✔ Container oauthhub-nginx            Started                                                                            11.5s
+ ✔ Network oauth_webhook_hub_internal  Created0.1s
+ ✔ Volume "oauth_webhook_hub_db_data"  Created0.0s
+ ✔ Container oauthhub-db               Healthy            11.0s
+ ✔ Container oauthhub-frontend         Started0.5s
+ ✔ Container oauthhub-backend          Started            11.2s
+ ✔ Container oauthhub-nginx            Started            11.5s
 root@gioam:/home/gioam/dockerS/oauth_webhook_hub#
 ```
 
@@ -277,11 +267,11 @@ Detailed execution strategy is consolidated in [`Docs/ROADMAP_EXTENDED.md`](Docs
 
 ```markdown
 Client ID
-9fb77143edb2416f9991cd2e65be0e62
+also1it2was3sssscha4in4ged202020
 App Status
 Development mode
 Client secret
-02c0e3c4a52d4d3f8871567a7a5f8d4c
+1it2was3cha4in4ged202020
 App name
 oauth_hub_tests
 App description
