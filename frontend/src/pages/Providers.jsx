@@ -210,6 +210,29 @@ export default function Providers() {
                 />
               </div>
             </div>
+            
+            <div className="bg-muted/50 p-3 rounded-lg border border-dashed border-primary/20 space-y-2">
+                <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold uppercase text-primary/80">Redirect URI (One-Click Copy)</label>
+                    <Badge variant="outline" className="text-[10px] h-5">Required</Badge>
+                </div>
+                <div 
+                    className="text-xs font-mono bg-background p-2 rounded border truncate cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors select-all"
+                    onClick={(e) => {
+                        navigator.clipboard.writeText(e.target.innerText);
+                        // Optional: Add toast triggers here if available
+                        e.target.classList.add('ring-2', 'ring-primary');
+                        setTimeout(() => e.target.classList.remove('ring-2', 'ring-primary'), 200);
+                    }}
+                    title="Click to copy"
+                >
+                    {window.location.origin}/api/oauth/callback
+                </div>
+                <p className="text-[10px] text-muted-foreground">
+                    Paste this <strong>exact URL</strong> into your {formData.name || 'Provider'} OAuth settings.
+                </p>
+            </div>
+
             <div className="pt-2">
                 <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? 'Creating...' : 'Create Provider'}
