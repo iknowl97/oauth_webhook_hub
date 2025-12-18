@@ -99,10 +99,11 @@ oauth_webhook_hub/
 - [x] Technology Audit (See `Docs/TECH_AUDIT.md`)
 - [x] **Webhook Sub-Binding System** (Wildcard Subdomains)
 - [x] **User Authentication** (JWT + Single Admin)
+- [x] **Production OAuth Connection** (Fixed 401 & Redirect URI issues)
 
 ### 🚀 Next Steps (Prioritized)
 
-1.  **Remote Proxy Config**: Configure remote Nginx/Traefik to handle `*.oauthhub.work.gd` and forward to local instance.
+1.  **Remote Proxy Config**: Configure remote Nginx/Traefik to handle `*.oauthhub.work.gd` (Verified manually).
 2.  **Refresh Token Daemon**: Background service to rotate tokens automatically.
 3.  **Data Export**: JSON export for logs and tokens.
 
@@ -261,5 +262,4 @@ APIs used
 Web API
 iOS
 Android
-
 ```
