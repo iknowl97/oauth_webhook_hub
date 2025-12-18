@@ -1,13 +1,13 @@
 # OAuth & Webhook Hub
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
+![Status](https://img.shields.io/badge/status-released-success.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-blue?logo=docker)
 ![Node.js](https://img.shields.io/badge/backend-Fastify-black?logo=nodedotjs)
 ![React](https://img.shields.io/badge/frontend-React-61DAFB?logo=react)
-![Tailwind](https://img.shields.io/badge/style-Tailwind-38B2AC?logo=tailwindcss)
-![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL-336791?logo=postgresql)
 
-> **A self-hosted, centralized Swiss Army Knife for managing OAuth 2.0 flows and inspecting Webhooks.**
+> **A self-hosted, centralized Swiss Army Knife for managing OAuth 2.0 flows and inspecting Webhooks. Now Production Ready (v1.0).**
 
 ---
 
@@ -25,10 +25,11 @@ Whether you are building an **n8n workflow**, a custom automation script, or jus
 
 ### 🛡️ OAuth Hub
 
-- **Universal Redirect URI**: Use a single callback URL (`/oauth/callback`) for all your apps (Google, GitHub, Spotify, etc.).
+- **One-Click Presets**: Instant setup for **Spotify, Google, GitHub, Slack, Discord**, and more. No more guessing URL endpoints.
+- **Universal Redirect URI**: Use a single callback URL (`/api/oauth/callback`) for all your apps.
 - **Token Vault**: Securely store Access and Refresh tokens encrypted with AES-256.
+- **Token Management**: **Refresh**, **Revoke**, and **View** tokens directly from the UI.
 - **PKCE Support**: Industry-standard security for your auth flows.
-- **Refresh Logic**: (Coming soon) Auto-refresh capabilities for long-running automations.
 
 ### 🪝 Webhook Inspector
 
@@ -37,11 +38,11 @@ Whether you are building an **n8n workflow**, a custom automation script, or jus
 - **Real-time Logging**: Inspect headers, body, and query parameters of incoming requests.
 - **Forwarding**: Automatically forward incoming webhooks to your local dev environment or other services (like n8n).
 
-### 🖥️ Modern UI
+### 🖥️ Modern UI & Security
 
 - **Dashboard**: At-a-glance health metrics and quick actions.
 - **Dark Mode**: sleek, glassmorphism-inspired "Zn/Slate" aesthetic.
-- **Responsive**: Fully mobile-compatible sidebar layout.
+- **Authentication**: JWT-based login system for single-user admin access.
 
 ---
 

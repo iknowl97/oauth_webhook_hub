@@ -4,12 +4,12 @@ This document is the **Single Source of Truth** for all upcoming features, syste
 
 ## 📅 Execution Phases
 
-| Phase       | Focus                     | Key Features                                         | Status         |
-| :---------- | :------------------------ | :--------------------------------------------------- | :------------- |
-| **Phase 1** | **Core Reliability**      | Kysely Migrations, Custom Paths, Presets             | 🟡 In Progress |
-| **Phase 2** | **Security & Management** | OAuth Token Storage, Refresh/Revoke, Pre-checking    | 🔴 Pending     |
-| **Phase 3** | **Data Visibility**       | Webhook Log Viewer, Payload Diff, Retention Settings | 🔴 Pending     |
-| **Phase 4** | **Developer Experience**  | Integration Guides, Flow Visualizer                  | 🔴 Pending     |
+| Phase       | Focus                     | Key Features                                         | Status     |
+| :---------- | :------------------------ | :--------------------------------------------------- | :--------- |
+| **Phase 1** | **Core Reliability**      | Kysely Migrations, Custom Paths, Presets             | ✅ Done    |
+| **Phase 2** | **Security & Management** | OAuth Token Storage, Refresh/Revoke, Pre-checking    | ✅ Done    |
+| **Phase 3** | **Data Visibility**       | Webhook Log Viewer, Payload Diff, Retention Settings | 🔴 Pending |
+| **Phase 4** | **Developer Experience**  | Integration Guides, Flow Visualizer                  | 🔴 Pending |
 
 ---
 
@@ -33,7 +33,7 @@ This document is the **Single Source of Truth** for all upcoming features, syste
   - **Backend**: Validation and Unique Constraint.
   - **Schema**: Added `path` column.
 
-### 1.2. Provider Presets & Quirks (Frontend/Backend)
+### 1.2. Provider Presets & Quirks (Frontend/Backend) ✅ Done
 
 **Goal:** "Zero-config" OAuth for popular providers.
 
@@ -47,7 +47,7 @@ This document is the **Single Source of Truth** for all upcoming features, syste
 
 ## 🔐 Phase 2: Security & Token Lifecycle
 
-### 2.1. OAuth Token Storage & Management (GUI)
+### 2.1. OAuth Token Storage & Management (GUI) ✅ Done
 
 **Goal:** Securely manage the complete lifecycle of obtained credentials.
 
