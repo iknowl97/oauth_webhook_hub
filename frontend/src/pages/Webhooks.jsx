@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getWebhooks, createWebhook, deleteWebhook, getWebhookRequests } from '../lib/api';
 import { Plus, Trash2, Copy, ExternalLink, Box, Activity, ChevronRight } from 'lucide-react';
 import Modal from '../components/Modal';
@@ -16,17 +16,22 @@ export default function Webhooks() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ description: '', forward_url: '', response_status: '200', response_body: '{"status":"ok"}' });
 
-  const loadHooks = async () => {
-    const data = await getWebhooks();
-    setHooks(data);
-    if (!selectedHook && data.length > 0) setSelectedHook(data[0]);
-  };
-  
-  const loadRequests = async (id) => {
-      setRequests(await getWebhookRequests(id));
-  };
+  const loadHooks = useCallback(async (init = false) => {
+      try {
+          const data = await getWebhooks();
+          setHooks(data);
+          if (init && !selectedHook && data.length > 0) setSelectedHook(data[0]);
+      } catch (e) {
+          console.error("Failed to load webhooks", e);
+      }
+  }, [selectedHook]); // Keep selectedHook to avoid stale closures, but generally careful with loops
 
-  useEffect(() => { loadHooks(); }, []);
+  const loadRequests = useCallback(async (id) => {
+      const data = await getWebhookRequests(id);
+      setRequests(data);
+  }, []);
+
+  useEffect(() => { loadHooks(true); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   
   useEffect(() => {
       if (selectedHook) {
@@ -34,7 +39,7 @@ export default function Webhooks() {
           const interval = setInterval(() => loadRequests(selectedHook.id), 3000); 
           return () => clearInterval(interval);
       }
-  }, [selectedHook]);
+  }, [selectedHook, loadRequests]);
 
   const handleCreate = async (e) => {
       e.preventDefault();
@@ -42,8 +47,12 @@ export default function Webhooks() {
           await createWebhook({ ...formData, response_status: parseInt(formData.response_status) });
           setIsModalOpen(false);
           loadHooks();
-          setFormData({ description: '', forward_url: '', response_status: '200', response_body: '{"status":"ok"}' });
-      } catch (err) { alert('Error creating webhook'); }
+          setFormData({ description: '', forward_url: '', response_status: '200', response_body: '{"status":"ok"}', preferred_path: '' });
+      } catch (err) { 
+          // Show error from backend if available
+          const msg = err.response?.data?.error || 'Error creating webhook';
+          alert(msg); 
+      }
   };
 
   const handleDelete = async (e, id) => {
@@ -172,6 +181,22 @@ export default function Webhooks() {
               <div className="space-y-2">
                   <label className="text-sm font-medium">Description</label>
                   <Input value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} placeholder="e.g. Stripe Payment Hook" required />
+              </div>
+              
+              <div className="space-y-2">
+                  <label className="text-sm font-medium">Path (Optional)</label>
+                  <div className="flex items-center">
+                    <div className="bg-muted px-3 py-2 border border-r-0 rounded-l-md text-sm text-muted-foreground whitespace-nowrap overflow-hidden max-w-[150px] text-ellipsis">
+                        {baseUrl}/hook/
+                    </div>
+                    <Input 
+                        className="rounded-l-none font-mono" 
+                        value={formData.preferred_path || ''} 
+                        onChange={e => setFormData({...formData, preferred_path: e.target.value})} 
+                        placeholder="my-custom-slug" 
+                    />
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">Leave empty to auto-generate a unique ID.</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">

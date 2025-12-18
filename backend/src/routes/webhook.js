@@ -8,9 +8,20 @@ async function webhookReceiver(fastify, options) {
     const { method, query, headers, body, ip } = request;
 
     // 1. Find Webhook
+    // 1. Find Webhook by ID or Path
+    // The route is /hook/:id, so 'id' captures the slug.
+    // Example: /hook/my-custom-slug -> id = "my-custom-slug"
+    // We check if it matches an ID OR if matches the path `/hook/my-custom-slug`
+    
+    const incomingSlug = id;
+    const potentialPath = `/hook/${incomingSlug}`;
+
     const hook = await db.selectFrom('webhooks')
       .selectAll()
-      .where('id', '=', id)
+      .where((eb) => eb.or([
+        eb('id', '=', incomingSlug),
+        eb('path', '=', potentialPath)
+      ]))
       .executeTakeFirst();
 
     if (!hook) {

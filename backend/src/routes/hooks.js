@@ -14,10 +14,27 @@ async function hookRoutes(fastify, options) {
 
   // Create Webhook
   fastify.post('/api/hooks', async (request, reply) => {
-    const { description, response_body_template, response_status, response_headers, forward_url } = request.body;
+    const { description, response_body_template, response_status, response_headers, forward_url, preferred_path } = request.body;
     
-    const id = nanoid(10); // Short ID
-    const path = `/hook/${id}`;
+    // Generate ID for PK (always internal UUID/NanoID)
+    const id = nanoid(10); 
+    
+    let path;
+    if (preferred_path) {
+        // Simple regex to ensure URL safety (alphanumeric, hyphens, underscores)
+        if (!/^[a-zA-Z0-9-_]+$/.test(preferred_path)) {
+            return reply.code(400).send({ error: 'Path must represent a valid URL slug (alphanumeric, -, _)' });
+        }
+        path = `/hook/${preferred_path}`;
+        
+        // Check uniqueness
+        const existing = await db.selectFrom('webhooks').select('id').where('path', '=', path).executeTakeFirst();
+        if (existing) {
+            return reply.code(409).send({ error: 'Path already in use' });
+        }
+    } else {
+        path = `/hook/${id}`;
+    }
 
     const result = await db.insertInto('webhooks')
       .values({
