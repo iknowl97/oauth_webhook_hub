@@ -109,7 +109,11 @@ async function oauthRoutes(fastify, options) {
         // 3. Exchange Token
         try {
             const clientSecret = provider.client_secret ? decrypt(provider.client_secret) : null;
-            const callbackUrl = `${APP_BASE_URL}/oauth/callback`;
+            let baseUrl = APP_BASE_URL.endsWith('/') ? APP_BASE_URL.slice(0, -1) : APP_BASE_URL;
+            if (!baseUrl.includes('localhost') && baseUrl.startsWith('http:')) {
+                baseUrl = baseUrl.replace('http:', 'https:');
+            }
+            const callbackUrl = `${baseUrl}/api/oauth/callback`;
             
             const tokenData = await exchangeToken(
                 provider.token_url,
