@@ -60,7 +60,9 @@ export default function Providers() {
   };
 
   const startAuth = (providerId) => {
-    const url = `${import.meta.env.VITE_API_BASE}/oauth/start/${providerId}?redirect_back=${window.location.origin}/tokens`;
+    const base = import.meta.env.VITE_API_BASE || '';
+    const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base;
+    const url = `${cleanBase}/api/oauth/start/${providerId}?redirect_back=${encodeURIComponent(window.location.origin + '/tokens')}`;
     window.open(url, 'oauth_window', 'width=600,height=700');
   };
 
