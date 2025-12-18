@@ -84,7 +84,7 @@ We have designed this project to be "zero-config" for local usage.
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/iknowl97/oauth-webhook-hub.git
+   git clone https://github.com/iknowl97/oauth_webhook_hub.git
    cd oauth-webhook-hub
    ```
 
