@@ -9,61 +9,70 @@ async function oauthRoutes(fastify, options) {
     // Start OAuth Flow
     // GET /api/oauth/start/:id?redirect_back=URL
     fastify.get('/api/oauth/start/:providerId', async (request, reply) => {
-        const { providerId } = request.params;
-        const { redirect_back, preview } = request.query;
+        try {
+            const { providerId } = request.params;
+            const { redirect_back, preview } = request.query;
 
-        const provider = await db.selectFrom('oauth_providers')
-            .selectAll()
-            .where('id', '=', providerId)
-            .executeTakeFirst();
-        
-        if (!provider) return reply.code(404).send({ error: 'Provider not found' });
+            const provider = await db.selectFrom('oauth_providers')
+                .selectAll()
+                .where('id', '=', providerId)
+                .executeTakeFirst();
+            
+            if (!provider) return reply.code(404).send({ error: 'Provider not found' });
 
-        const state = generateState();
-        const { verifier, challenge } = generatePKCE();
-        const callbackUrl = `${APP_BASE_URL}/api/oauth/callback`;
+            const state = generateState();
+            const { verifier, challenge } = generatePKCE();
+            const callbackUrl = `${APP_BASE_URL}/api/oauth/callback`;
 
-        // Store session
-        // Previous migration fix ensures oauth_sessions has all columns
-        await db.insertInto('oauth_sessions')
-            .values({
-                id: sql`gen_random_uuid()`, // Allow explicit ID if needed, or default
-                provider_id: provider.id,
-                state: state,
-                code_verifier: verifier,
-                redirect_back: redirect_back || null,
-                created_at: new Date(),
-                expires_at: new Date(Date.now() + 1000 * 60 * 10) // 10 mins
-            })
-            .execute();
+            // Store session
+            // Previous migration fix ensures oauth_sessions has all columns
+            await db.insertInto('oauth_sessions')
+                .values({
+                    id: sql`gen_random_uuid()`, // Allow explicit ID if needed, or default
+                    provider_id: provider.id,
+                    state: state,
+                    code_verifier: verifier,
+                    redirect_back: redirect_back || null,
+                    created_at: new Date(),
+                    expires_at: new Date(Date.now() + 1000 * 60 * 10) // 10 mins
+                })
+                .execute();
 
-        // Build URL
-        const url = new URL(provider.auth_url);
-        url.searchParams.append('response_type', 'code');
-        url.searchParams.append('client_id', provider.client_id);
-        url.searchParams.append('redirect_uri', callbackUrl);
-        url.searchParams.append('state', state);
-        
-        // Scope handling
-        let scopeStr = '';
-        if (Array.isArray(provider.scopes)) scopeStr = provider.scopes.join(' ');
-        else if (typeof provider.scopes === 'string') scopeStr = provider.scopes;
-        
-        if (scopeStr) url.searchParams.append('scope', scopeStr);
+            // Build URL
+            const url = new URL(provider.auth_url);
+            url.searchParams.append('response_type', 'code');
+            url.searchParams.append('client_id', provider.client_id);
+            url.searchParams.append('redirect_uri', callbackUrl);
+            url.searchParams.append('state', state);
+            
+            // Scope handling
+            let scopeStr = '';
+            if (Array.isArray(provider.scopes)) scopeStr = provider.scopes.join(' ');
+            else if (typeof provider.scopes === 'string') scopeStr = provider.scopes;
+            
+            if (scopeStr) url.searchParams.append('scope', scopeStr);
 
-        // PKCE
-        url.searchParams.append('code_challenge', challenge);
-        url.searchParams.append('code_challenge_method', 'S256');
+            // PKCE
+            url.searchParams.append('code_challenge', challenge);
+            url.searchParams.append('code_challenge_method', 'S256');
 
-        // Extra params
-        if (provider.extra_params) {
-            Object.entries(provider.extra_params).forEach(([k, v]) => {
-                url.searchParams.append(k, v);
-            });
+            // Extra params
+            if (provider.extra_params) {
+                Object.entries(provider.extra_params).forEach(([k, v]) => {
+                    url.searchParams.append(k, v);
+                });
+            }
+
+            // Preview or Redirect
+            if (preview === 'true') {
+                return { url: url.toString() };
+            }
+
+            return reply.redirect(url.toString());
+        } catch (err) {
+            request.log.error(err);
+            return reply.code(500).send({ error: 'OAuth Start Failed: ' + err.message, fullError: err.toString() });
         }
-
-        // 5. Redirect
-        return reply.redirect(authUrl.toString());
     });
 
     // Callback Handler
