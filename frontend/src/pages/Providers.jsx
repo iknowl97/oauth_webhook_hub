@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getProviders, createProvider, deleteProvider } from '../lib/api';
+import api, { getProviders, createProvider, deleteProvider } from '../lib/api';
 import { Plus, Trash2, Key, Link2, Shield, Eye } from "lucide-react";
 import { ProviderPresetsGrid } from "../components/ProviderPresetsGrid";
 import Modal from '../components/Modal';
@@ -7,7 +7,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { api } from '../lib/api'; // Import raw api for custom GET
+
 
 export default function Providers() {
   const [providers, setProviders] = useState([]);
