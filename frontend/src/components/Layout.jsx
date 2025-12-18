@@ -49,7 +49,7 @@ export default function Layout({ children }) {
           
           <div className="px-6 pb-2">
             <h1 className="font-bold text-xl tracking-tight opacity-80">OAuth Hub</h1>
-            <p className="text-xs text-muted-foreground">Localhost Edition</p>
+            <p className="text-xs text-muted-foreground">v1.0.0</p>
           </div>
 
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
