@@ -1,6 +1,6 @@
 const { generateState, generatePKCE, exchangeToken } = require('../services/oauth');
 const { encrypt, decrypt } = require('../services/encryption');
-const { sql } = require('kysely'); // Added for sql`gen_random_uuid()`
+
 
 async function oauthRoutes(fastify, options) {
     const { db } = require('../db/connection');
@@ -28,7 +28,6 @@ async function oauthRoutes(fastify, options) {
             // Previous migration fix ensures oauth_sessions has all columns
             await db.insertInto('oauth_sessions')
                 .values({
-                    id: sql`gen_random_uuid()`, // Allow explicit ID if needed, or default
                     provider_id: provider.id,
                     state: state,
                     code_verifier: verifier,
