@@ -76,7 +76,7 @@ async function oauthRoutes(fastify, options) {
     });
 
     // Callback Handler
-    fastify.get('/oauth/callback', async (request, reply) => {
+    fastify.get('/api/oauth/callback', async (request, reply) => {
         const { code, state, error } = request.query;
 
         if (error) {
